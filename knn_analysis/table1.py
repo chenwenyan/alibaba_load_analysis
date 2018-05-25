@@ -112,8 +112,10 @@ def statistics_data():
 
     avg_instance_duration, max_instance_duration, min_instance_duration = 0, 0, 0
     avg_task_duration, max_task_duration, min_task_duration = 0, 0, 0
-    print(instance_df.groupby([instance_df.iloc[:, 2], instance_df.iloc[:, 3]]))
-    print(instance_df.groupby(instance_df.iloc[:, 3]).mean())
+    grouped_by_job_task = instance_df.groupby([instance_df.iloc[:, 2], instance_df.iloc[:, 3]])
+    grouped_by_job = instance_df.groupby(instance_df.iloc[:, 2])
+    print(grouped_by_job_task.describe().count())
+    print(grouped_by_job.count())
     # for indexs in instance_df.index:
     #     record = instance_df.loc[indexs].values[0:-1]
 

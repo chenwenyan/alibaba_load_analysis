@@ -16,9 +16,8 @@ def MaxMinNormalization(list, Max, Min):
 def graph_data():
     # 读取用于聚类的数据，并创建数据表
     data = pd.read_csv('../dataset/batch_task.csv', header=None, iterator=True)
-    # loan_data = pd.DataFrame(data, columns=('start_timestamp', 'end_timestamp', 'job_id', 'task_id', 'machineID',
-    #                                         'seq_no', 'total_seq_no', 'real_cpu_max', 'real_cpu_avg', 'real_mem_max',
-    #                                         'real_mem_avg'))
+    # task_df = pd.DataFrame(task_df,columns=('create_timestamp','modify_timestamp','job_id','task_id','instance_num','status',
+    #                                                                             'plan_cpu','plan_mem'))
 
     loop = True
     chunkSize = 10000
@@ -43,7 +42,7 @@ def graph_data():
         tasks = len(job)
         a = job.iloc[:, 4].values
         b = job.iloc[:, 6].values
-        c = job.iloc[:, 6].values
+        c = job.iloc[:, 7].values
         a = [0 if np.isnan(x) else x for x in a]
         b = [0 if np.isnan(x) else x for x in b]
         c = [0 if np.isnan(x) else x for x in c]
@@ -59,7 +58,7 @@ def graph_data():
     task_num = MaxMinNormalization(task_num, np.max(task_num), np.min(task_num))
 
     # 设置类别为3
-    clf = KMeans(n_clusters=2)
+    clf = KMeans(n_clusters=3)
     # 将数据代入到聚类模型中
     loan = []
     loan.append(task_num)
@@ -86,21 +85,20 @@ def graph_data():
     x2 = class_2.iloc[:, 0].values
     y2 = class_2.iloc[:, 1].values
     z2 = class_2.iloc[:, 2].values
-    # class_3 = loan_df[loan_df.iloc[:, 3] == 2]
-    # x3 = class_3.iloc[:, 0].values
-    # y3 = class_3.iloc[:, 1].values
-    # z3 = class_3.iloc[:, 2].values
+    class_3 = loan_df[loan_df.iloc[:, 3] == 2]
+    x3 = class_3.iloc[:, 0].values
+    y3 = class_3.iloc[:, 1].values
+    z3 = class_3.iloc[:, 2].values
     ax.scatter(x1, y1, z1, color='red', s=1)
-    ax.scatter(x2, y2, z2, color='blue', s= 1)
-    # ax.scatter(x3, y3, z3, color='yellow')
+    ax.scatter(x2, y2, z2, color='blue', s=1)
+    ax.scatter(x3, y3, z3, color='green', s=1)
 
     ax.set_xlabel('task num(per job)')
     ax.set_ylabel('total plan cpu(per job)')
     ax.set_zlabel('total plan memory(per job)')
-    # plt.title('Use the elbow rule to determine the best K value')
+    plt.title('clustering jobs with k-means algorithm')
     plt.savefig('../images/knn_job.png')
     plt.show()
-
 
 if __name__ == '__main__':
     graph_data()
