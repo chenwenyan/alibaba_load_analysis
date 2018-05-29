@@ -39,11 +39,9 @@ def graph_data():
     ax1.set_ylim(0, max(ids))
     ax2.set_xlim(0, max(times))
     ax2.set_ylim(0, max(ids))
-    # cbar.set_ticklabels(('0','20','40','60','80','100'))
     # 保存图片
-    plt.savefig('../images/figure_1.png')
+    plt.savefig('../imgs_mysql/figure_1.png')
     plt.show()
-
 
 if __name__ == '__main__':
     graph_data()

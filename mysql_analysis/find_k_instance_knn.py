@@ -16,19 +16,20 @@ def graph():
 
     try:
         # 查询数据条目
-        job_duration = cursor.execute("SELECT max(end_timestamp) - min(start_timestamp) FROM batch_instance WHERE status = 'Terminated' group by job_id")
-        job_duration = cursor.fetchall()
-        list_job_duration = list(job_duration)
-        arr_job_duration = [x[0] for x in list_job_duration]
+        cursor.execute("SELECT end_timestamp - start_timestamp FROM batch_instance WHERE status = 'Terminated' and real_mem_avg != 0")
+        instance_duration = cursor.fetchall()
+        list_instance_duration = list(instance_duration)
+        arr_instance_duration = [x[0] for x in list_instance_duration]
+        print(arr_instance_duration)
 
-        cursor.execute("select t.job_id, avg(t.avg_cpu), avg(t.avg_mem) from (select job_id, task_id, avg(real_cpu_avg) as avg_cpu, avg(real_mem_avg) as avg_mem from batch_instance where status='Terminated' group by task_id )t group by job_id ")
-        # cursor.execute("select t.job_id, avg(t.avg_cpu), avg(t.avg_mem) from (select job_id, task_id, avg(cpu) as avg_cpu, avg(mem) as avg_mem from test  group by task_id )t group by job_id ")
+        cursor.execute("select machineID, real_cpu_avg, real_mem_avg from batch_instance where status = 'Terminated' and real_mem_avg != 0")
         records = cursor.fetchall()
         list_records = list(records)
         res = []
         res[:] = map(list, list_records)
 
-        job_arr = [x[0] for x in res]
+        machineID_arr = [x[0] for x in res]
+        print(machineID_arr)
         cpu_arr = [x[1] for x in res]
         mem_arr = [x[2] for x in res]
 
@@ -40,7 +41,7 @@ def graph():
         clf = KMeans(n_clusters=3)
         # 将数据带入到聚类模型中
         loan = []
-        loan.append(arr_job_duration)
+        loan.append(arr_instance_duration)
         loan.append(cpu_arr)
         loan.append(mem_arr)
         loan = np.asarray(loan)
@@ -51,18 +52,17 @@ def graph():
         for k in K:
             kmeans = KMeans(n_clusters=k)
             kmeans.fit(loan)
-            # kmeans.fit(tasknum,plancpunum,planmemnum)
             # meandistortions.append(sum(np.min(cdist(X, kmeans.cluster_centers_, 'euclidean'), axis=1)) / X.shape[0])
             meandistortions.append(kmeans.inertia_)
 
         # 绘图
         plt.figure()
         plt.plot(K, meandistortions, 'o-')
-        plt.axvline(3, ls="--", color="r")
+        plt.axvline(4, ls="--", color="r")
         plt.xlabel('number of clusters')
         plt.ylabel('the average degree of distortion')
         plt.title('Use the elbow rule to determine the best K value')
-        plt.savefig('../images/find_k_job.png')
+        plt.savefig('../imgs_mysql/find_k_instance.png')
         plt.show()
 
     except:
