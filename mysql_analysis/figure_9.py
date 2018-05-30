@@ -1,9 +1,6 @@
 import MySQLdb as mdb
-from sklearn.cluster import KMeans
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-from mpl_toolkits.mplot3d import Axes3D
 
 
 def CountRangeKey(list, key):
@@ -48,7 +45,7 @@ def graph():
         # ax = plt.axes(xscale='log')
         ax.set_xscale('log')
         ax.grid(linestyle='--')
-        plt.savefig('../imgs_mysql/cdf_of_instance.png')
+        plt.savefig('../imgs_mysql/figure_9.png')
         plt.show()
 
     except:
@@ -61,7 +58,6 @@ def graph():
         cursor.close()
         # 关闭数据库连接
         conn.close()
-
 
 if __name__ == '__main__':
     graph()
