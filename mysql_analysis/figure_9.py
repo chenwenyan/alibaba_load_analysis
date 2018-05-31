@@ -40,7 +40,7 @@ def graph():
         fig = plt.figure()
         ax = fig.add_subplot(111)
         ax.plot(X, arr_sum_instance_duration)
-        ax.set_xlabel('instance duration')
+        ax.set_xlabel('instance duration(hour)')
         ax.set_ylabel('portion of instance')
         # ax = plt.axes(xscale='log')
         ax.set_xscale('log')

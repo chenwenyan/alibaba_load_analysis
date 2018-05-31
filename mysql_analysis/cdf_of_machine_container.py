@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import MySQLdb as mdb
 import numpy as np
 
+
 def graph():
     # 连接数据库
     conn = mdb.connect(host='127.0.0.1', port=3306, user='root', passwd='root', db='alibaba_trace', charset='utf8')
@@ -53,54 +54,58 @@ def graph():
     print(max(avg_cpu))
     print(min(avg_cpu))
 
-    fig = plt.figure(figsize=(12,4))
+    fig = plt.figure(figsize=(12, 4))
     ax1 = fig.add_subplot(1, 3, 1)
     ax2 = fig.add_subplot(1, 3, 2)
     ax3 = fig.add_subplot(1, 3, 3)
     # server
     server_hist, server_bin_edges = np.histogram(server_avg_cpu, bins=len(np.unique(server_avg_cpu)))
     server_cdf = np.cumsum(server_hist / sum(server_hist))
-    ax1.plot(server_bin_edges[1:], server_cdf, color='blue', label='server')
+    ax1.plot(server_bin_edges[1:], server_cdf, color='blue', label='instance on server')
     # container
     hist, bin_edges = np.histogram(avg_cpu, bins=len(np.unique(avg_cpu)))
     cdf = np.cumsum(hist / sum(hist))
     print(bin_edges)
-    ax1.plot(bin_edges[1:], cdf, color='green', label='container')
+    ax1.plot(bin_edges[1:], cdf, color='green', label='instance on container')
 
     # server
     server_hist, server_bin_edges = np.histogram(server_avg_cpu, bins=len(np.unique(server_avg_mem)))
     server_cdf = np.cumsum(server_hist / sum(server_hist))
-    ax2.plot(server_bin_edges[1:], server_cdf, color='blue', ls='--', label='server')
+    ax2.plot(server_bin_edges[1:], server_cdf, color='blue', ls='--', label='instance on server')
     # container
     hist, bin_edges = np.histogram(avg_mem, bins=len(np.unique(avg_mem)))
     cdf = np.cumsum(hist / sum(hist))
     print(bin_edges)
-    ax2.plot(bin_edges[1:], cdf, color='green', ls='--', label='container')
+    ax2.plot(bin_edges[1:], cdf, color='green', ls='--', label='instance on container')
 
     # server
     server_hist, server_bin_edges = np.histogram(server_avg_cpu, bins=len(np.unique(server_avg_disk)))
     server_cdf = np.cumsum(server_hist / sum(server_hist))
-    ax3.plot(server_bin_edges[1:], server_cdf, color='blue',  ls='-.', label='server')
+    ax3.plot(server_bin_edges[1:], server_cdf, color='blue', ls='-.', label='instance on server')
     # container
     hist, bin_edges = np.histogram(avg_disk, bins=len(np.unique(avg_disk)))
     cdf = np.cumsum(hist / sum(hist))
-    ax3.plot(bin_edges[1:], cdf, color='green', ls='-.', label='container')
+    ax3.plot(bin_edges[1:], cdf, color='green', ls='-.', label='instance on container')
 
     ax1.set_ylabel('portion of machine/container')
     ax1.set_xlabel('cpu utilization')
-    ax2.set_ylabel('portion of instance')
+    ax1.set_ylim(0, 1.4)
+    # ax2.set_ylabel('portion of instance')
     ax2.set_xlabel('memory utilization')
-    ax3.set_ylabel('portion of instance')
+    ax2.set_ylim(0, 1.4)
+    # ax3.set_ylabel('portion of instance')
     ax3.set_xlabel('disk utilization')
+    ax3.set_ylim(0, 1.4)
     # ax1.grid(linestyle='--')
     ax1.legend(loc="best")
     ax2.legend(loc="best")
     ax3.legend(loc="best")
-    # ax1.axhline(1.0, ls="--", color="r")
-    # ax2.axhline(1.0, ls="--", color="r")
-    # ax3.axhline(1.0, ls="--", color="r")
+    # ax1.axhline(1.0, ls="--", color="red")
+    # ax2.axhline(1.0, ls="--", color="red")
+    # ax3.axhline(1.0, ls="--", color="red")
     plt.savefig('../imgs_mysql/cdf.png')
     plt.show()
+
 
 if __name__ == '__main__':
     graph()
