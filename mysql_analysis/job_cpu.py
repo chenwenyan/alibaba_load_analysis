@@ -51,10 +51,10 @@ def graph():
     # ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_cpu.png')
     # # 直方图
-    # ax1.hist(avg_cpu, normed=False, alpha=1.0, facecolor='g', bins=50)
-    # ax1.set_xlabel('average cpu per job')
-    # ax1.set_ylabel('job number')
-    # plt.savefig("../imgs_mysql/hist_of_job_cpu")
+    ax1.hist(avg_cpu, normed=False, alpha=1.0, bins=100)
+    ax1.set_xlabel('average cpu per job')
+    ax1.set_ylabel('job number')
+    plt.savefig("../imgs_mysql/hist_of_job_cpu")
 
     # memory
     # hist, bin_edges = np.histogram(avg_mem, bins=len(np.unique(avg_mem)))
@@ -64,10 +64,10 @@ def graph():
     # ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_memory.png')
     # 直方图
-    ax1.hist(avg_mem, normed=False, alpha=1.0, facecolor='g', bins=50)
-    ax1.set_xlabel('average memory per job')
-    ax1.set_ylabel('job number')
-    plt.savefig("../imgs_mysql/hist_of_job_memory")
+    # ax1.hist(avg_mem, normed=False, alpha=1.0, bins=100)
+    # ax1.set_xlabel('average memory per job')
+    # ax1.set_ylabel('job number')
+    # plt.savefig("../imgs_mysql/hist_of_job_memory")
 
     plt.show()
 

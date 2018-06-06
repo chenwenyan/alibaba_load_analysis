@@ -42,7 +42,7 @@ def graph():
         records = cursor.fetchall()
         resource_record_of_short_job = list(records)
 
-        cursor.execute("SELECT a.job_id, avg(a.cpu), avg(a.mem) FROM ( SELECT job_id, avg(real_cpu_avg) AS cpu, avg(real_mem_avg) AS mem FROM batch_instance WHERE real_mem_avg > 0 GROUP BY task_id ) a WHERE a.job_id IN ( SELECT t.job_id FROM ( SELECT job_id, max(modify_timestamp) - min(create_timestamp) AS job_duration FROM batch_task WHERE STATUS = 'Terminated' GROUP BY job_id ) t WHERE t.job_duration / 3600 > 0.2 and t.job_duration / 3600 <= 5) GROUP BY a.job_id")
+        cursor.execute("SELECT a.job_id, avg(a.cpu), avg(a.mem) FROM ( SELECT job_id, avg(real_cpu_avg) AS cpu, avg(real_mem_avg) AS mem FROM batch_instance WHERE real_mem_avg > 0 GROUP BY task_id ) a WHERE a.job_id IN ( SELECT t.job_id FROM ( SELECT job_id, max(modify_timestamp) - min(create_timestamp) AS job_duration FROM batch_task WHERE STATUS = 'Terminated' GROUP BY job_id ) t WHERE t.job_duration / 3600 > 0.2 and t.job_duration / 3600 <= 10) GROUP BY a.job_id")
         records = cursor.fetchall()
         resource_record_of_medium_job = list(records)
 
@@ -93,12 +93,12 @@ def graph():
             less[8] = less[8] + 1
 
     # 绘图
-    # fig = plt.figure(figsize=(9,4))
+    # fig = plt.figure(figsize=(9, 4))
     fig = plt.figure()
     # ax1 = fig.add_subplot(121)
     # ax2 = fig.add_subplot(122)
     ax1 = fig.add_subplot(111)
-    ax1.hist(job_duration, normed=False, alpha=1.0, facecolor='g', bins=50)
+    ax1.hist(job_duration, normed=False, alpha=1.0, bins=100)
     # hist, bin_edges = np.histogram(job_duration, bins=len(np.unique(job_duration)))
     # cdf = np.cumsum(hist / sum(hist))
     # ax1.plot(bin_edges[1:], cdf, color='red', ls='-')
@@ -126,10 +126,10 @@ def graph():
     # id_resource_record_of_short_job = [x[0] for x in res]
     # cpu_resource_record_of_short_job = [x[1] for x in res]
     # mem_resource_record_of_short_job = [x[2] for x in res]
-    # ax1.hist(cpu_resource_record_of_short_job, normed=False, alpha=0.7, bins=50)
+    # ax1.hist(cpu_resource_record_of_short_job, normed=False, alpha=0.7, bins=100)
     # ax1.set_xlabel("CPU utilization(short job)")
     # ax1.set_ylabel("job number(short job)")
-    # ax2.hist(mem_resource_record_of_short_job, normed=False, alpha=0.7, bins=50)
+    # ax2.hist(mem_resource_record_of_short_job, normed=False, alpha=0.7, bins=100)
     # ax2.set_xlabel("memory utilization(short job)")
     # ax2.set_ylabel("job number(short job)")
     # plt.savefig("../imgs_mysql/short_job_duration.png")
@@ -140,10 +140,10 @@ def graph():
     # id_resource_record_of_medium_job = [x[0] for x in res]
     # cpu_resource_record_of_medium_job = [x[1] for x in res]
     # mem_resource_record_of_medium_job = [x[2] for x in res]
-    # ax1.hist(cpu_resource_record_of_medium_job, normed=False, alpha=0.7, bins=50)
+    # ax1.hist(cpu_resource_record_of_medium_job, normed=False, alpha=0.7, bins=100)
     # ax1.set_xlabel("CPU utilization(medium job)")
     # ax1.set_ylabel("job number(medium job)")
-    # ax2.hist(mem_resource_record_of_medium_job, normed=False, alpha=0.7, bins=50)
+    # ax2.hist(mem_resource_record_of_medium_job, normed=False, alpha=0.7, bins=100)
     # ax2.set_xlabel("memory utilization(medium job)")
     # ax2.set_ylabel("job number(medium job)")
     # plt.savefig("../imgs_mysql/medium_job_duration.png")
