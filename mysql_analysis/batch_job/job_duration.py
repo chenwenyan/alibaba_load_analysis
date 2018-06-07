@@ -99,6 +99,7 @@ def graph():
     # ax2 = fig.add_subplot(122)
     ax1 = fig.add_subplot(111)
     ax1.hist(job_duration, normed=False, alpha=1.0, bins=100)
+    print((max(job_duration) - min(job_duration)) /100)
     # hist, bin_edges = np.histogram(job_duration, bins=len(np.unique(job_duration)))
     # cdf = np.cumsum(hist / sum(hist))
     # ax1.plot(bin_edges[1:], cdf, color='red', ls='-')

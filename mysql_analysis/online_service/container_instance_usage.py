@@ -15,7 +15,7 @@ def graph():
     # 因该模块底层其实是调用CAPI的，所以，需要先得到当前指向数据库的指针。
 
     try:
-        cursor.execute("select instance_id, avg(cpu_util), avg(mem_util), avg(disk_util) from container_usage group by instance_id")
+        cursor.execute("select instance_id, avg(cpu_util), avg(mem_util), avg(disk_util),avg(avg_cpi), avg(avg_mpki) from container_usage group by instance_id")
         records = cursor.fetchall()
         result = list(records)
         print(result)
@@ -44,23 +44,40 @@ def graph():
     avg_disk = [x[3] for x in res]
     print(max(avg_disk))
     print(min(avg_disk))
+    avg_cpi = [x[4] for x in res]
+    avg_mpki = [x[5] for x in res]
+
     # 绘图
-    fig = plt.figure(figsize=(9,4))
+    fig = plt.figure(figsize=(11, 4))
     ax1 = fig.add_subplot(1, 3, 1)
     ax2 = fig.add_subplot(1, 3, 2)
     ax3 = fig.add_subplot(1, 3, 3)
-    ax1.set_xlabel('average cpu utilization')
-    ax2.set_xlabel('average memory utilization')
-    ax3.set_xlabel('average disk utilization')
+    ax1.set_xlabel('average cpu utilization(%)')
+    ax2.set_xlabel('average memory utilization(%)')
+    ax3.set_xlabel('average disk utilization(%)')
     ax1.set_ylabel('portion of instance')
-    ax1.set_ylim(0, 50)
-    ax2.set_ylim(0, 50)
-    ax3.set_ylim(0, 50)
-    ax1.hist(avg_cpu, normed=False, alpha=1.0,  bins=len(np.unique(avg_cpu)))
-    ax2.hist(avg_mem, normed=False, alpha=1.0,  bins=len(np.unique(avg_mem)))
-    ax3.hist(avg_disk, normed=False, alpha=1.0, bins=len(np.unique(avg_disk)))
+    ax1.set_ylim(0, 1200)
+    ax2.set_ylim(0, 1200)
+    ax3.set_ylim(0, 1200)
+    # ax1.hist(avg_cpu, normed=False, alpha=1.0,  bins=len(np.unique(avg_cpu)))
+    # ax2.hist(avg_mem, normed=False, alpha=1.0,  bins=len(np.unique(avg_mem)))
+    # ax3.hist(avg_disk, normed=False, alpha=1.0, bins=len(np.unique(avg_disk)))
+    ax1.hist(avg_cpu, normed=False, alpha=1.0,  bins=100)
+    ax2.hist(avg_mem, normed=False, alpha=1.0,  bins=100)
+    ax3.hist(avg_disk, normed=False, alpha=1.0, bins=100)
+    # ax1 = fig.add_subplot(121)
+    # ax2 = fig.add_subplot(122)
+    # ax1.set_xlabel("average cpi")
+    # ax2.set_xlabel("average mpki")
+    # ax1.set_ylabel("portion of instance")
+    # ax2.set_ylabel("portion of instance")
+    # ax1.set_ylim(0, 1200)
+    # ax2.set_ylim(0, 1200)
+    # ax1.hist(avg_cpi, normed=False, alpha=1.0,  bins=100)
+    # ax2.hist(avg_mpki, normed=False, alpha=1.0,  bins=100)
 
     plt.savefig('../imgs_mysql/container_instance_usage.png')
+    # plt.savefig('../imgs_mysql/container_instance_cpi_mpki_usage.png')
     plt.show()
 
 if __name__ == '__main__':
