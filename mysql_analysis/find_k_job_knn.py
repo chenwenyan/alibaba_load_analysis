@@ -35,9 +35,6 @@ def graph():
         # 如果没有设置自动提交事务，则这里需要手动提交一次
         conn.commit()
 
-        # k-means聚类
-        # 设置类别为3
-        clf = KMeans(n_clusters=3)
         # 将数据带入到聚类模型中
         loan = []
         loan.append(arr_job_duration)

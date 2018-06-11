@@ -90,11 +90,12 @@ def graph():
         # 绘图 hist直方图
         fig = plt.figure(figsize=(12, 5))
         ax1 = fig.add_subplot(2, 3, 1)
-        ax2 = fig.add_subplot(2, 3, 2)
-        ax3 = fig.add_subplot(2, 3, 3)
-        ax4 = fig.add_subplot(2, 3, 4)
-        ax5 = fig.add_subplot(2, 3, 5)
-        ax6 = fig.add_subplot(2, 3, 6)
+        ax1.set_yscale('log')
+        ax2 = fig.add_subplot(2, 3, 2, sharey=ax1)
+        ax3 = fig.add_subplot(2, 3, 3, sharey=ax1)
+        ax4 = fig.add_subplot(2, 3, 4, sharey=ax1)
+        ax5 = fig.add_subplot(2, 3, 5, sharey=ax1)
+        ax6 = fig.add_subplot(2, 3, 6, sharey=ax1)
         ax5.set_xlabel("task number of task for job")
         ax1.set_ylabel("portion of job")
         ax4.set_ylabel("portion of job")
@@ -130,7 +131,7 @@ def graph():
         # ax1.plot(bin_edges[1:], cdf, color='pink', label='medium-mid-less')
         # ax1.legend(loc="best")
 
-        plt.savefig('../imgs_mysql/machine_job_class_task.png')
+        plt.savefig('../../imgs_mysql/machine_job_class_task.png')
         # plt.savefig('../imgs_mysql/machine_job_class_task_cdf.png')
         plt.show()
 

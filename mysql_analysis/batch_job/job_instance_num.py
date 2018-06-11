@@ -41,12 +41,14 @@ def graph():
     ax1 = fig.add_subplot(1, 1, 1)
     ax1.set_ylabel('job number')
     ax1.set_xlabel('total instance number per job')
-    ax1.set_ylim(0, 9000)
+    # ax1.set_ylim(0, 9000)
+    ax1.set_yscale("log")
+    # ax1.set_xscale("log")
     # ax1.set_xlim(0,10000)
     instances_num = [float(x) for x in instances_num]
     ax1.hist(instances_num, normed=False, alpha=1.0, facecolor='g', bins=len(np.unique(instances_num)))
 
-    plt.savefig('../imgs_mysql/job_instance_num.png')
+    plt.savefig('../../imgs_mysql/job_instance_num.png')
     plt.show()
 
 if __name__ == '__main__':

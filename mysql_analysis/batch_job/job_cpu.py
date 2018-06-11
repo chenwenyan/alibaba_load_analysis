@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import MySQLdb as mdb
 import numpy as np
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 
 def graph():
@@ -51,10 +52,14 @@ def graph():
     # ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_cpu.png')
     # # 直方图
-    ax1.hist(avg_cpu, normed=False, alpha=1.0, bins=100)
-    ax1.set_xlabel('average cpu per job')
-    ax1.set_ylabel('job number')
-    plt.savefig("../imgs_mysql/hist_of_job_cpu")
+    # ax1.hist(avg_cpu, normed=False, alpha=1.0, bins=100)
+    # ax1.set_xlabel('average cpu per job')
+    # ax1.set_ylabel('job number')
+    # axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
+    # hist, bin_edges = np.histogram(avg_cpu, bins=len(np.unique(avg_cpu)))
+    # cdf = np.cumsum(hist / sum(hist))
+    # axins.plot(bin_edges[1:], cdf, color='red', ls='-')
+    # plt.savefig("../../imgs_mysql/hist_of_job_cpu")
 
     # memory
     # hist, bin_edges = np.histogram(avg_mem, bins=len(np.unique(avg_mem)))
@@ -64,13 +69,16 @@ def graph():
     # ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_memory.png')
     # 直方图
-    # ax1.hist(avg_mem, normed=False, alpha=1.0, bins=100)
-    # ax1.set_xlabel('average memory per job')
-    # ax1.set_ylabel('job number')
-    # plt.savefig("../imgs_mysql/hist_of_job_memory")
+    ax1.hist(avg_mem, normed=False, alpha=1.0, bins=100)
+    ax1.set_xlabel('average memory per job')
+    ax1.set_ylabel('job number')
+    axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
+    hist, bin_edges = np.histogram(avg_mem, bins=len(np.unique(avg_mem)))
+    cdf = np.cumsum(hist / sum(hist))
+    axins.plot(bin_edges[1:], cdf, color='red', ls='-')
+    plt.savefig("../../imgs_mysql/hist_of_job_memory")
 
     plt.show()
-
 
 if __name__ == '__main__':
     graph()
