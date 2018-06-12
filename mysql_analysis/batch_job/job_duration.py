@@ -92,23 +92,24 @@ def graph():
             less[8] = less[8] + 1
 
     # 绘图
-    fig = plt.figure(figsize=(9, 4))
-    ax1 = fig.add_subplot(121)
-    ax2 = fig.add_subplot(122)
-    # fig = plt.figure()
-    # ax1 = fig.add_subplot(111)
-    # ax1.hist(job_duration, normed=False, alpha=1.0, bins=100)
-    # print((max(job_duration) - min(job_duration)) /100)
-    # ax1.set_yscale('log')
-    # ax1.set_xlabel("job duration(h)")
-    # ax1.set_ylabel("portion of job")
-    # axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
-    # hist, bin_edges = np.histogram(job_duration, bins=len(np.unique(job_duration)))
-    # cdf = np.cumsum(hist / sum(hist))
-    # axins.plot(bin_edges[1:], cdf, color='red', ls='-')
-    # axins.set_xscale('log')
-    #
-    # plt.savefig("../../imgs_mysql/job_duration_hist.png")
+    # fig = plt.figure(figsize=(9, 4))
+    # ax1 = fig.add_subplot(121)
+    # ax2 = fig.add_subplot(122)
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax1.hist(job_duration, normed=False, alpha=1.0, bins=100)
+    print((max(job_duration) - min(job_duration)) /100)
+    ax1.set_yscale('log')
+    ax1.set_xlabel("job duration(h)")
+    ax1.set_ylabel("portion of job")
+    axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
+    hist, bin_edges = np.histogram(job_duration, bins=100)
+    cdf = np.cumsum(hist / sum(hist))
+    axins.plot(bin_edges[1:], cdf, color='red', ls='-')
+    axins.set_xscale('log')
+    print(len(np.unique(job_duration)))
+
+    plt.savefig("../../imgs_mysql/job_duration_hist.png")
 
 
     # 统计短job
@@ -128,20 +129,20 @@ def graph():
     # plt.savefig("../../imgs_mysql/short_job_duration.png")
 
     # medium job
-    res = []
-    res[:] = map(list, resource_record_of_medium_job)
-    id_resource_record_of_medium_job = [x[0] for x in res]
-    cpu_resource_record_of_medium_job = [x[1] for x in res]
-    mem_resource_record_of_medium_job = [x[2] for x in res]
-    ax1.hist(cpu_resource_record_of_medium_job, normed=False, alpha=0.7, bins=100)
-    ax1.set_xlabel("CPU utilization(medium job)")
-    ax1.set_ylabel("job number(medium job)")
-    ax2.hist(mem_resource_record_of_medium_job, normed=False, alpha=0.7, bins=100)
-    ax2.set_xlabel("memory utilization(medium job)")
-    ax2.set_ylabel("job number(medium job)")
-    ax1.set_ylim(0, 15)
-    ax2.set_ylim(0, 15)
-    plt.savefig("../../imgs_mysql/medium_job_duration.png")
+    # res = []
+    # res[:] = map(list, resource_record_of_medium_job)
+    # id_resource_record_of_medium_job = [x[0] for x in res]
+    # cpu_resource_record_of_medium_job = [x[1] for x in res]
+    # mem_resource_record_of_medium_job = [x[2] for x in res]
+    # ax1.hist(cpu_resource_record_of_medium_job, normed=False, alpha=0.7, bins=100)
+    # ax1.set_xlabel("CPU utilization(medium job)")
+    # ax1.set_ylabel("job number(medium job)")
+    # ax2.hist(mem_resource_record_of_medium_job, normed=False, alpha=0.7, bins=100)
+    # ax2.set_xlabel("memory utilization(medium job)")
+    # ax2.set_ylabel("job number(medium job)")
+    # ax1.set_ylim(0, 15)
+    # ax2.set_ylim(0, 15)
+    # plt.savefig("../../imgs_mysql/medium_job_duration.png")
 
     # long job
     # res = []
