@@ -1,125 +1,142 @@
-import MySQLdb as mdb
+"""
+===============================================================================
+Selecting the number of clusters with silhouette analysis on KMeans clustering
+===============================================================================
+
+Silhouette analysis can be used to study the separation distance between the
+resulting clusters. The silhouette plot displays a measure of how close each
+point in one cluster is to points in the neighboring clusters and thus provides
+a way to assess parameters like number of clusters visually. This measure has a
+range of [-1, 1].
+
+Silhouette coefficients (as these values are referred to as) near +1 indicate
+that the sample is far away from the neighboring clusters. A value of 0
+indicates that the sample is on or very close to the decision boundary between
+two neighboring clusters and negative values indicate that those samples might
+have been assigned to the wrong cluster.
+
+In this example the silhouette analysis is used to choose an optimal value for
+``n_clusters``. The silhouette plot shows that the ``n_clusters`` value of 3, 5
+and 6 are a bad pick for the given data due to the presence of clusters with
+below average silhouette scores and also due to wide fluctuations in the size
+of the silhouette plots. Silhouette analysis is more ambivalent in deciding
+between 2 and 4.
+
+Also from the thickness of the silhouette plot the cluster size can be
+visualized. The silhouette plot for cluster 0 when ``n_clusters`` is equal to
+2, is bigger in size owing to the grouping of the 3 sub clusters into one big
+cluster. However when the ``n_clusters`` is equal to 4, all the plots are more
+or less of similar thickness and hence are of similar sizes as can be also
+verified from the labelled scatter plot on the right.
+"""
+
+from __future__ import print_function
+
+from sklearn.datasets import make_blobs
 from sklearn.cluster import KMeans
-import numpy as np
+from sklearn.metrics import silhouette_samples, silhouette_score
+
 import matplotlib.pyplot as plt
-import pandas as pd
-from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.cm as cm
+import numpy as np
 
+print(__doc__)
 
-# 自定义归一化方法
-def MaxMinNormalization(list, Max, Min):
-    res = []
-    for x in list:
-        x = (x - Min) / (Max - Min)
-        res.append(x)
-    return res
+# Generating the sample data from make_blobs
+# This particular setting has one distinct cluster and 3 clusters placed close
+# together.
+X, y = make_blobs(n_samples=500,
+                  n_features=2,
+                  centers=4,
+                  cluster_std=1,
+                  center_box=(-10.0, 10.0),
+                  shuffle=True,
+                  random_state=1)  # For reproducibility
 
+range_n_clusters = [2, 3, 4, 5, 6]
 
-def graph():
-    # 连接数据库
-    conn = mdb.connect(host='127.0.0.1', port=3306, user='root', passwd='root', db='alibaba_trace', charset='utf8')
+for n_clusters in range_n_clusters:
+    # Create a subplot with 1 row and 2 columns
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    fig.set_size_inches(18, 7)
 
-    # 如果使用事务引擎，可以设置自动提交事务，或者在每次操作完成后手动提交事务conn.commit()
-    conn.autocommit(1)  # conn.autocommit(True)
+    # The 1st subplot is the silhouette plot
+    # The silhouette coefficient can range from -1, 1 but in this example all
+    # lie within [-0.1, 1]
+    ax1.set_xlim([-0.1, 1])
+    # The (n_clusters+1)*10 is for inserting blank space between silhouette
+    # plots of individual clusters, to demarcate them clearly.
+    ax1.set_ylim([0, len(X) + (n_clusters + 1) * 10])
 
-    # 使用cursor()方法获取操作游标
-    cursor = conn.cursor()
-    # 因该模块底层其实是调用CAPI的，所以，需要先得到当前指向数据库的指针。
+    # Initialize the clusterer with n_clusters value and a random generator
+    # seed of 10 for reproducibility.
+    clusterer = KMeans(n_clusters=n_clusters, random_state=10)
+    cluster_labels = clusterer.fit_predict(X)
 
-    try:
-        # 查询数据条目
-        cursor.execute(
-            "SELECT end_timestamp - start_timestamp FROM batch_instance WHERE status = 'Terminated' and real_mem_avg != 0")
-        instance_duration = cursor.fetchall()
-        list_instance_duration = list(instance_duration)
-        arr_instance_duration = [x[0] for x in list_instance_duration]
-        arr_instance_duration_norm = MaxMinNormalization(arr_instance_duration, max(arr_instance_duration),
-                                                         min(arr_instance_duration))
+    # The silhouette_score gives the average value for all the samples.
+    # This gives a perspective into the density and separation of the formed
+    # clusters
+    silhouette_avg = silhouette_score(X, cluster_labels)
+    print("For n_clusters =", n_clusters,
+          "The average silhouette_score is :", silhouette_avg)
 
-        cursor.execute(
-            "select machineID, real_cpu_avg, real_mem_avg from batch_instance where status = 'Terminated' and real_mem_avg != 0")
-        records = cursor.fetchall()
-        list_records = list(records)
-        res = []
-        res[:] = map(list, list_records)
+    # Compute the silhouette scores for each sample
+    sample_silhouette_values = silhouette_samples(X, cluster_labels)
 
-        machineID_arr = [x[0] for x in res]
-        print(machineID_arr)
-        cpu_arr = [x[1] for x in res]
-        cpu_arr_norm = MaxMinNormalization(cpu_arr, max(cpu_arr), min(cpu_arr))
-        mem_arr = [x[2] for x in res]
-        mem_arr_norm = MaxMinNormalization(mem_arr, max(mem_arr), min(mem_arr))
+    y_lower = 10
+    for i in range(n_clusters):
+        # Aggregate the silhouette scores for samples belonging to
+        # cluster i, and sort them
+        ith_cluster_silhouette_values = \
+            sample_silhouette_values[cluster_labels == i]
 
-        # 如果没有设置自动提交事务，则这里需要手动提交一次
-        conn.commit()
+        ith_cluster_silhouette_values.sort()
 
-        # k-means聚类
-        # 设置类别为4
-        clf = KMeans(n_clusters=4)
-        # 将数据带入到聚类模型中
-        loan = []
-        loan.append(arr_instance_duration_norm)
-        loan.append(cpu_arr_norm)
-        loan.append(mem_arr_norm)
-        loan = np.asarray(loan)
-        loan = loan.transpose()
+        size_cluster_i = ith_cluster_silhouette_values.shape[0]
+        y_upper = y_lower + size_cluster_i
 
-        clf = clf.fit(loan)
-        loan = np.insert(loan, 3, values=clf.labels_, axis=1)
+        # color = cm.spectral(float(i) / n_clusters)
+        ax1.fill_betweenx(np.arange(y_lower, y_upper),
+                          0, ith_cluster_silhouette_values,
+                          facecolor='green', edgecolor='red', alpha=0.7)
 
-        fig = plt.figure()
-        ax = Axes3D(fig)
-        loan_df = pd.DataFrame(loan)
-        class_1 = loan_df[loan_df.iloc[:, 3] == 0]
-        print('class_1:')
-        print(class_1)
-        x1 = class_1.iloc[:, 0].values
-        y1 = class_1.iloc[:, 1].values
-        z1 = class_1.iloc[:, 2].values
-        class_2 = loan_df[loan_df.iloc[:, 3] == 1]
-        x2 = class_2.iloc[:, 0].values
-        y2 = class_2.iloc[:, 1].values
-        z2 = class_2.iloc[:, 2].values
-        print("class_2:")
-        print(class_2)
-        class_3 = loan_df[loan_df.iloc[:, 3] == 2]
-        x3 = class_3.iloc[:, 0].values
-        y3 = class_3.iloc[:, 1].values
-        z3 = class_3.iloc[:, 2].values
-        print("class_3")
-        print(class_3)
-        class_4 = loan_df[loan_df.iloc[:, 3] == 3]
-        x4 = class_4.iloc[:, 0].values
-        y4 = class_4.iloc[:, 1].values
-        z4 = class_4.iloc[:, 2].values
-        print("class_4")
-        print(class_4)
-        ax.scatter(x1, y1, z1, color='red', s=1, label='cluster 1')
-        ax.scatter(x2, y2, z2, color='blue', s=1, label='cluster 2')
-        ax.scatter(x3, y3, z3, color='yellow', s=1, label='cluster 3')
-        ax.scatter(x4, y4, z4, color='green', s=1, label='cluster 4')
+        # Label the silhouette plots with their cluster numbers at the middle
+        ax1.text(-0.05, y_lower + 0.5 * size_cluster_i, str(i))
 
-        ax.set_xlabel('instance duration')
-        ax.set_ylabel('average cpu(per instance)')
-        ax.set_zlabel('average memory(per instance)')
-        ax.grid(linestyle='--')
-        plt.savefig('../imgs_mysql/knn_instance.png')
-        plt.show()
+        # Compute the new y_lower for next plot
+        y_lower = y_upper + 10  # 10 for the 0 samples
 
-        # 分析某一类实例分布在具有什么特点的server上
-        # class 1
+    ax1.set_title("The silhouette plot for the various clusters.")
+    ax1.set_xlabel("The silhouette coefficient values")
+    ax1.set_ylabel("Cluster label")
 
-    except:
-        import traceback
-        traceback.print_exc()
-        # 发生错误时回滚
-        conn.rollback()
-    finally:
-        # 关闭游标连接
-        cursor.close()
-        # 关闭数据库连接
-        conn.close()
+    # The vertical line for average silhouette score of all the values
+    ax1.axvline(x=silhouette_avg, color="red", linestyle="--")
 
+    ax1.set_yticks([])  # Clear the yaxis labels / ticks
+    ax1.set_xticks([-0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
 
-if __name__ == '__main__':
-    graph()
+    # 2nd Plot showing the actual clusters formed
+    # colors = cm.spectral(cluster_labels.astype(float) / n_clusters)
+    ax2.scatter(X[:, 0], X[:, 1], marker='.', s=30, lw=0, alpha=0.7,
+                c='red', edgecolor='k')
+
+    # Labeling the clusters
+    centers = clusterer.cluster_centers_
+    # Draw white circles at cluster centers
+    ax2.scatter(centers[:, 0], centers[:, 1], marker='o',
+                c="white", alpha=1, s=200, edgecolor='k')
+
+    for i, c in enumerate(centers):
+        ax2.scatter(c[0], c[1], marker='$%d$' % i, alpha=1,
+                    s=50, edgecolor='k')
+
+    ax2.set_title("The visualization of the clustered data.")
+    ax2.set_xlabel("Feature space for the 1st feature")
+    ax2.set_ylabel("Feature space for the 2nd feature")
+
+    plt.suptitle(("Silhouette analysis for KMeans clustering on sample data "
+                  "with n_clusters = %d" % n_clusters),
+                 fontsize=14, fontweight='bold')
+
+    plt.show()
