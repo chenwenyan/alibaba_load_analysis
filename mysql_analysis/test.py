@@ -37,7 +37,17 @@ def graph():
         #         cursor.execute("update batch_instance a, batch_job_category b set a.category = b.category_1 where a.job_id = b.job_id ")
 
         # cursor.execute("update batch_instance set category = 'mms' where job_id = 562")
-        cursor.execute("update batch_instance a, batch_job_category b set a.category = b.category_1 where a.job_id = b.job_id")
+        # cursor.execute("update batch_instance a, batch_job_category b set a.category = b.category_1 where a.job_id = b.job_id")
+        # cursor.execute("delete from machine_job where job_id not in (select job_id from batch_job_category)")
+        machine_job = []
+        a = []
+        for i in range(0,1314):
+            cursor.execute("select distinct job_id from batch_instance where machineID = (%d)" %(i))
+            result = cursor.fetchall()
+            result = list(result)
+            a[i] = result
+            print(a[i])
+            machine_job = machine_job.append(a[i])
 
         # 如果没有设置自动提交事务，则这里需要手动提交一次
         conn.commit()

@@ -31,20 +31,20 @@ def graph():
         # 查询数据条目
         # cursor.execute(
         #     "SELECT max(modify_timestamp) - min(create_timestamp) FROM batch_task WHERE status = 'Terminated'  group by job_id ASC ")
-        cursor.execute("select avg_cpu, avg_mem from batch_job_category where avg_cpu > 0 and avg_mem > 0")
-        results = cursor.fetchall()
-        result_list = list(results)
-        avg_cpu = [x[0] for x in result_list]
-        avg_mem = [x[1] for x in result_list]
-        # cursor.execute(
-        #     "select instance_id, avg(cpu_util), avg(mem_util), avg(disk_util) from container_usage where mem_util > 0 and cpu_util > 0 and disk_util > 0 group by instance_id"
-        # )
+        # cursor.execute("select avg_cpu, avg_mem from batch_job_category where avg_cpu > 0 and avg_mem > 0")
         # results = cursor.fetchall()
         # result_list = list(results)
-        # ts = [x[0] for x in result_list]
-        # avg_cpu = [x[1] for x in result_list]
-        # avg_mem = [x[2] for x in result_list]
-        # avg_disk = [x[3] for x in result_list]
+        # avg_cpu = [x[0] for x in result_list]
+        # avg_mem = [x[1] for x in result_list]
+        cursor.execute(
+            "select instance_id, avg(cpu_util), avg(mem_util), avg(disk_util) from container_usage where mem_util > 0 and cpu_util > 0 and disk_util > 0 group by instance_id"
+        )
+        results = cursor.fetchall()
+        result_list = list(results)
+        ts = [x[0] for x in result_list]
+        avg_cpu = [x[1] for x in result_list]
+        avg_mem = [x[2] for x in result_list]
+        avg_disk = [x[3] for x in result_list]
 
         # 如果没有设置自动提交事务，则这里需要手动提交一次
         conn.commit()
@@ -58,35 +58,35 @@ def graph():
         loan = np.asarray(loan)
         loan = loan.transpose()
         # k-means聚类
-        # clf = KMeans(n_clusters=3)
-        # cluster_labels = clf.fit_predict(loan)
-        # loan_res = np.insert(loan, 1, values=clf.labels_, axis=1)
-        # class_1,class_2,class_3 = [],[],[]
-        # for i in loan_res:
-        #     if i[1] == 0:
-        #         class_1.append(i[0])
-        #     elif i[1] == 1:
-        #         class_2.append(i[0])
-        #     else:
-        #         class_3.append(i[0])
-        # print(max(class_1))
-        # print(min(class_1))
-        # print(max(class_2))
-        # print(min(class_2))
-        # print(max(class_3))
-        # print(min(class_3))
+        clf = KMeans(n_clusters=2)
+        cluster_labels = clf.fit_predict(loan)
+        loan_res = np.insert(loan, 1, values=clf.labels_, axis=1)
+        class_1,class_2,class_3 = [],[],[]
+        for i in loan_res:
+            if i[1] == 0:
+                class_1.append(i[0])
+            elif i[1] == 1:
+                class_2.append(i[0])
+            else:
+                class_3.append(i[0])
+        print(max(class_1))
+        print(min(class_1))
+        print(max(class_2))
+        print(min(class_2))
+        print(max(class_3))
+        print(min(class_3))
         # 设置类别为3
-        n_cluster = range(2,11)
-        sample_silhouette_avg_list = []
-        for cluster in n_cluster:
-            clf = KMeans(n_clusters=cluster)
-            cluster_labels = clf.fit_predict(loan)
-            silhouette_avg = silhouette_score(loan, cluster_labels)
-            print("For n_clusters =", cluster,
-                  "The average silhouette_score is :", silhouette_avg)
-            sample_silhouette_values = silhouette_samples(loan, cluster_labels)
-            print(sample_silhouette_values)
-            sample_silhouette_avg_list.append(silhouette_avg)
+        # n_cluster = range(2,11)
+        # sample_silhouette_avg_list = []
+        # for cluster in n_cluster:
+        #     clf = KMeans(n_clusters=cluster)
+        #     cluster_labels = clf.fit_predict(loan)
+        #     silhouette_avg = silhouette_score(loan, cluster_labels)
+        #     print("For n_clusters =", cluster,
+        #           "The average silhouette_score is :", silhouette_avg)
+        #     sample_silhouette_values = silhouette_samples(loan, cluster_labels)
+        #     print(sample_silhouette_values)
+        #     sample_silhouette_avg_list.append(silhouette_avg)
 
 
 
@@ -123,13 +123,13 @@ def graph():
             # ax1.set_xticks([-0.2, -0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
             # plt.savefig("../imgs_mysql/batch_job_category_silhoutte_value_" + str(cluster))
             # plt.show()
-        fig = plt.figure()
-        ax1 = fig.add_subplot(111)
-        ax1.plot(range(2,11), sample_silhouette_avg_list, 'cx-')
-        ax1.set_xlabel("cluster k")
-        ax1.set_ylabel("average silhouette score")
-        plt.savefig("../imgs_mysql/batch_job_category_average_silhouette")
-        plt.show()
+        # fig = plt.figure()
+        # ax1 = fig.add_subplot(111)
+        # ax1.plot(range(2,11), sample_silhouette_avg_list, 'cx-')
+        # ax1.set_xlabel("cluster k")
+        # ax1.set_ylabel("average silhouette score")
+        # plt.savefig("../imgs_mysql/batch_job_category_average_silhouette")
+        # plt.show()
 
 
     except:

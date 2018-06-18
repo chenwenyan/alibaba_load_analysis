@@ -16,10 +16,21 @@ def graph():
     # 因该模块底层其实是调用CAPI的，所以，需要先得到当前指向数据库的指针。
 
     try:
-        cursor.execute("select job_id, max(modify_timestamp)-min(create_timestamp) from batch_task where status = 'Terminated' group by job_id  ")
+        # cursor.execute("select job_id, max(modify_timestamp)-min(create_timestamp) from batch_task where status = 'Terminated' group by job_id  ")
+        # records = cursor.fetchall()
+        # result = list(records)
+        # print(result)
+
+        cursor.execute("SELECT t.job_id, t.avg_cpu, t.avg_mem FROM batch_job_category t WHERE t.job_duration <= 0.1534")
         records = cursor.fetchall()
-        result = list(records)
-        print(result)
+        s_result = list(records)
+        print(s_result)
+
+        cursor.execute("SELECT t.job_id, t.avg_cpu, t.avg_mem FROM batch_job_category t WHERE t.job_duration > 0.1534")
+        records = cursor.fetchall()
+        m_result = list(records)
+        print(m_result)
+
     except:
         import traceback
         traceback.print_exc()
@@ -32,38 +43,34 @@ def graph():
         conn.close()
 
     res = []
-    res[:] = map(list, result)
-    ids = [x[0] for x in res]
-    job_duration = [x[1]/3600 for x in res]
-    print(max(job_duration))
-    print(min(job_duration))
-    ids = np.asarray(ids)
-    job_duration = np.asarray(job_duration)
+    res[:] = map(list, s_result)
+    s_job_ids = [x[0] for x in res]
+    s_avg_cpu = [x[1] for x in res]
+    s_avg_mem = [x[2] for x in res]
 
-    data = []
-    data.append(ids)
-    data.append(job_duration)
-    data = np.asarray(data)
-    data = data.transpose()
+    res = []
+    res[:] = map(list, m_result)
+    m_job_ids = [x[0] for x in res]
+    m_avg_cpu = [x[1] for x in res]
+    m_avg_mem = [x[2] for x in res]
 
-    K = range(1, 10)
-    meandistortions = []
-    for k in K:
-        kmeans = KMeans(n_clusters=k)
-        kmeans.fit(data)
-        # kmeans.fit(tasknum,plancpunum,planmemnum)
-        # meandistortions.append(sum(np.min(cdist(X, kmeans.cluster_centers_, 'euclidean'), axis=1)) / X.shape[0])
-        meandistortions.append(kmeans.inertia_)
+    fig = plt.figure(figsize=(9,4))
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122, sharex=ax1, sharey=ax1)
+    # ax1.hist(s_avg_cpu,bins=100)
+    # ax2.hist(m_avg_cpu,bins=100)
+    # ax1.set_xlabel("average cpu for short job")
+    # ax2.set_xlabel("average cpu for medium job")
+    # ax1.set_ylabel("portion of job")
+    # plt.savefig('../../imgs_mysql/k-means_job_duration_cpu_mem.png')
 
-    fig = plt.figure()
-    ax1 = fig.add_subplot(1, 1, 1)
-    ax1.plot(K, meandistortions, 'o-')
-    ax1.axvline(3, ls="--", color="r")
-    ax1.set_xlabel('number of clusters')
-    ax1.set_ylabel('the average degree of distortion')
-    ax1.set_title('Use the elbow rule to determine the best K value')
+    ax1.hist(s_avg_mem,bins=100)
+    ax2.hist(m_avg_mem,bins=100)
+    ax1.set_xlabel("average memory for short job")
+    ax2.set_xlabel("average memory for medium job")
+    ax1.set_ylabel("portion of job")
+    plt.savefig('../../imgs_mysql/k-means_job_duration_memory.png')
 
-    plt.savefig('../../imgs_mysql/k-means_job_duration.png')
     plt.show()
 
 if __name__ == '__main__':
