@@ -52,6 +52,8 @@ def graph():
     print(max(cdf))
     axins.plot(bin_edges[1:], cdf, color='red', ls='-')
     axins.set_xscale('log')
+    axins.set_xlabel("task number per job", fontsize=7)
+    axins.set_ylabel("portion of job", fontsize=7)
     # axins.set_yticks([])
 
     plt.savefig("../../imgs_mysql/hist_of_job_task_num")

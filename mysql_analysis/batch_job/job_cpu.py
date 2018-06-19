@@ -15,7 +15,7 @@ def graph():
     cursor = conn.cursor()
     # 因该模块底层其实是调用CAPI的，所以，需要先得到当前指向数据库的指针。
     try:
-        cursor.execute("select a.job_id, avg(a.cpu), avg(a.mem) from (select job_id, avg(real_cpu_avg) as cpu, avg(real_mem_avg) as mem from batch_instance where real_mem_avg > 0 group by task_id) a group by job_id")
+        cursor.execute("select a.job_id, avg(a.cpu), avg(a.mem) from (select job_id, avg(real_cpu_avg) as cpu, avg(real_mem_avg) as mem from batch_instance where real_mem_avg > 0 and job_id is not NULL group by task_id) a group by job_id")
         records = cursor.fetchall()
         list_records = list(records)
 
@@ -35,6 +35,7 @@ def graph():
     job_id = [x[0] for x in res]
     avg_cpu = [x[1] for x in res]
     avg_mem = [x[2] for x in res]
+    avg_mem.remove(max(avg_mem))
     print(max(avg_cpu))
     print(min(avg_cpu))
     print(max(avg_mem))
@@ -53,12 +54,14 @@ def graph():
     # plt.savefig('../imgs_mysql/cdf_of_job_cpu.png')
     # # 直方图
     # ax1.hist(avg_cpu, normed=False, alpha=1.0, bins=100)
-    # ax1.set_xlabel('average cpu per job')
+    # ax1.set_xlabel('average cpu cores per job')
     # ax1.set_ylabel('job number')
     # axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
-    # hist, bin_edges = np.histogram(avg_cpu, bins=len(np.unique(avg_cpu)))
+    # hist, bin_edges = np.histogram(avg_cpu, bins=100)
     # cdf = np.cumsum(hist / sum(hist))
     # axins.plot(bin_edges[1:], cdf, color='red', ls='-')
+    # axins.set_xlabel("average cpu cores per job", fontsize=6)
+    # axins.set_ylabel("portion of job", fontsize=6)
     # plt.savefig("../../imgs_mysql/hist_of_job_cpu")
 
     # memory
@@ -70,12 +73,17 @@ def graph():
     # plt.savefig('../imgs_mysql/cdf_of_job_memory.png')
     # 直方图
     ax1.hist(avg_mem, normed=False, alpha=1.0, bins=100)
-    ax1.set_xlabel('average memory per job')
+    ax1.set_xlabel('average normalized memory per job')
     ax1.set_ylabel('job number')
+    # ax1.set_yscale('log')
     axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
-    hist, bin_edges = np.histogram(avg_mem, bins=len(np.unique(avg_mem)))
+    hist, bin_edges = np.histogram(avg_mem, bins=100)
     cdf = np.cumsum(hist / sum(hist))
     axins.plot(bin_edges[1:], cdf, color='red', ls='-')
+    # axins.xticks(fontsize=7)
+    # axins.yticks(fontsize=7)
+    axins.set_xlabel("average memory cores per job", fontsize=7)
+    axins.set_ylabel("portion of job", fontsize=7)
     plt.savefig("../../imgs_mysql/hist_of_job_memory")
 
     plt.show()

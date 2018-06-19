@@ -58,8 +58,8 @@ def graph():
     cdf = np.cumsum(hist / sum(hist))
     axins.plot(bin_edges[1:], cdf, color='red', ls='-')
     # axins.set_yticks([])  # 设置y轴不显示刻度值
-    # axins.set_xlabel("instance number per machine")
-    # axins.set_ylabel("portion of machine")
+    axins.set_xlabel("instance number per machine", fontsize=6)
+    axins.set_ylabel("portion of machine", fontsize=6)
 
     plt.savefig("../../imgs_mysql/container_machine_instance_num")
     plt.show()

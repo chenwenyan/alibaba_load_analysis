@@ -50,6 +50,10 @@ def graph():
     cdf = np.cumsum(hist / sum(hist))
     axins.plot(bin_edges[1:], cdf, color='red', ls='-')
     axins.set_xscale('log')
+    # axins.set_xticks(fontsize=7)
+    # axins.set_yticks(fontsize=7)
+    axins.set_xlabel("average task duration(h)", fontsize=7)
+    axins.set_ylabel("portion of job", fontsize=7)
     # axins.set_yticks([])
 
     plt.savefig("../../imgs_mysql/hist_of_task_duration_of_job")
