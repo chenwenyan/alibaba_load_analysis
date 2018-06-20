@@ -15,10 +15,11 @@ def graph():
 
     try:
         cursor.execute(
-            "select ts, avg(avg_cpi), avg(max_cpi), min(avg_cpi), avg(avg_mpki), avg(max_mpki), min(avg_mpki) from container_usage group by ts ASC")
+            "select ts, avg(avg_cpi), avg(max_cpi), min(avg_cpi), avg(avg_mpki), avg(max_mpki), min(avg_mpki) from container_usage group by instance_id, ts ASC")
+        # cursor.execute("SELECT t.ts, avg(t.avg_cpi), avg(t.max_cpi), avg(t.min_cpi), avg(t.avg_mpki), avg(t.max_mpki), avg(t.min_mpki) FROM ( SELECT ts, avg(avg_cpi) AS avg_cpi, avg(max_cpi) AS max_cpi, min(avg_cpi) AS min_cpi, avg(avg_mpki) AS avg_mpki, avg(max_mpki) AS max_mpki, min(avg_mpki) AS min_mpki FROM container_usage GROUP BY instance_id ) t GROUP BY t.ts")
         records = cursor.fetchall()
         result = list(records)
-        print(result)
+        # print(result)
 
         res = []
         res[:] = map(list, result)
@@ -73,7 +74,7 @@ def graph():
         ax1.legend(loc="best")
         ax2.legend(loc="best")
 
-        plt.savefig('../imgs_mysql/container_instance_cpi_plot.png')
+        plt.savefig('../../imgs_mysql/container_instance_cpi_plot.png')
         plt.show()
     except:
         import traceback

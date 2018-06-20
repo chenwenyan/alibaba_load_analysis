@@ -97,7 +97,7 @@ def graph():
     # ax2 = fig.add_subplot(122)
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
-    ax1.hist(job_duration, normed=False, alpha=1.0, bins=100)
+    ax1.hist(job_duration, density=False, alpha=1.0, bins=100)
     print((max(job_duration) - min(job_duration)) /100)
     ax1.set_yscale('log')
     ax1.set_xlabel("job duration(h)")
@@ -120,10 +120,10 @@ def graph():
     # id_resource_record_of_short_job = [x[0] for x in res]
     # cpu_resource_record_of_short_job = [x[1] for x in res]
     # mem_resource_record_of_short_job = [x[2] for x in res]
-    # ax1.hist(cpu_resource_record_of_short_job, normed=False, alpha=0.7, bins=100)
+    # ax1.hist(cpu_resource_record_of_short_job, density=False, alpha=0.7, bins=100)
     # ax1.set_xlabel("CPU utilization(short job)")
     # ax1.set_ylabel("job number(short job)")
-    # ax2.hist(mem_resource_record_of_short_job, normed=False, alpha=0.7, bins=100)
+    # ax2.hist(mem_resource_record_of_short_job, density=False, alpha=0.7, bins=100)
     # ax2.set_xlabel("memory utilization(short job)")
     # ax2.set_ylabel("job number(short job)")
     # ax1.set_ylim(0, 200)
@@ -136,10 +136,10 @@ def graph():
     # id_resource_record_of_medium_job = [x[0] for x in res]
     # cpu_resource_record_of_medium_job = [x[1] for x in res]
     # mem_resource_record_of_medium_job = [x[2] for x in res]
-    # ax1.hist(cpu_resource_record_of_medium_job, normed=False, alpha=0.7, bins=100)
+    # ax1.hist(cpu_resource_record_of_medium_job, density=False, alpha=0.7, bins=100)
     # ax1.set_xlabel("CPU utilization(medium job)")
     # ax1.set_ylabel("job number(medium job)")
-    # ax2.hist(mem_resource_record_of_medium_job, normed=False, alpha=0.7, bins=100)
+    # ax2.hist(mem_resource_record_of_medium_job, density=False, alpha=0.7, bins=100)
     # ax2.set_xlabel("memory utilization(medium job)")
     # ax2.set_ylabel("job number(medium job)")
     # ax1.set_ylim(0, 15)
@@ -152,11 +152,11 @@ def graph():
     # id_resource_record_of_long_job = [x[0] for x in res]
     # cpu_resource_record_of_long_job = [x[1] for x in res]
     # mem_resource_record_of_long_job = [x[2] for x in res]
-    # ax1.hist(cpu_resource_record_of_long_job, normed=False, alpha=0.7, bins=50)
+    # ax1.hist(cpu_resource_record_of_long_job, density=False, alpha=0.7, bins=50)
     # ax1.set_xlabel("CPU utilization(long job)")
     # ax1.set_ylabel("job number(long job)")
     # ax1.set_yticks([0,1,2])
-    # ax2.hist(mem_resource_record_of_long_job, normed=False, alpha=0.7, bins=50)
+    # ax2.hist(mem_resource_record_of_long_job, density=False, alpha=0.7, bins=50)
     # ax2.set_xlabel("memory utilization(long job)")
     # ax2.set_ylabel("job number(long job)")
     # # ax2.set_xlim(0.0,0.001)

@@ -28,6 +28,9 @@ def graph_data():
         times = [(x / 3600 - 11) for x in df_id.iloc[:, 0].values]
         cpu = df_id.iloc[:, 2].values
         mem = df_id.iloc[:, 3].values
+        print(type(ids))
+        print(type(times))
+        print(type(cpu))
         ax1.scatter(times, ids, c=cpu, norm=norm, alpha=0.5, s=2.0)
         ax2.scatter(times, ids, c=mem, norm=norm, alpha=0.5, s=2.0)
     # 绘制渐变色标注

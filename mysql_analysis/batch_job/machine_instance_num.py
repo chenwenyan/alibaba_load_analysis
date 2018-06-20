@@ -48,7 +48,7 @@ def graph():
     # plt.savefig('../../imgs_mysql/cdf_of_machine_instance.png')
 
     # # 直方图
-    ax1.hist(instance_num, normed=False, alpha=1.0, bins=100)
+    ax1.hist(instance_num, density=False, alpha=1.0, bins=100)
     ax1.set_xlabel('instance number per machine')
     ax1.set_ylabel('machine number')
     # cdf

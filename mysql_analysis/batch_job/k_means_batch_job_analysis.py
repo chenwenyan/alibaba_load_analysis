@@ -60,7 +60,7 @@ def graph():
     # ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_cpu.png')
     # # 直方图
-    # ax1.hist(avg_cpu, normed=False, alpha=1.0, bins=100)
+    # ax1.hist(avg_cpu, density=False, alpha=1.0, bins=100)
     # ax1.set_xlabel('average cpu per job')
     # ax1.set_ylabel('job number')
     # axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
@@ -77,7 +77,7 @@ def graph():
     # ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_memory.png')
     # 直方图
-    # ax1.hist(avg_mem, normed=False, alpha=1.0, bins=100)
+    # ax1.hist(avg_mem, density=False, alpha=1.0, bins=100)
     # ax1.set_xlabel('average memory per job')
     # ax1.set_ylabel('job number')
     # axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')

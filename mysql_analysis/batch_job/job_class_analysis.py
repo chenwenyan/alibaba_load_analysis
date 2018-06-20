@@ -250,7 +250,7 @@ def graph():
     # ax1 = fig.add_subplot(1, 1, 1)
     #
     # # 直方图
-    # ax1.hist(avg_mem, normed=False, alpha=1.0, facecolor='g', bins=50)
+    # ax1.hist(avg_mem, density=False, alpha=1.0, facecolor='g', bins=50)
     # ax1.set_xlabel('average memory per job')
     # ax1.set_ylabel('job number')
     # plt.savefig("../imgs_mysql/hist_of_job_memory")

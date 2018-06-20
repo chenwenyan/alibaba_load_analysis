@@ -74,10 +74,10 @@ def graph():
         ax2.set_xlabel("task number for batch job's category")
         ax1.set_ylabel("portion of job")
         # ax4.set_ylabel("portion of job")
-        ax1.hist(sss_instance_num, normed=False, alpha=1.0, bins=100)
-        ax2.hist(sms_instance_num, normed=False, alpha=1.0, bins=100)
-        ax3.hist(mss_instance_num, normed=False, alpha=1.0, bins=100)
-        ax4.hist(mms_instance_num, normed=False, alpha=1.0, bins=100)
+        ax1.hist(sss_instance_num, density=False, alpha=1.0, bins=100)
+        ax2.hist(sms_instance_num, density=False, alpha=1.0, bins=100)
+        ax3.hist(mss_instance_num, density=False, alpha=1.0, bins=100)
+        ax4.hist(mms_instance_num, density=False, alpha=1.0, bins=100)
         plt.savefig('../../imgs_mysql/kmeans_job_category_task_number.png')
 
         # cdf图

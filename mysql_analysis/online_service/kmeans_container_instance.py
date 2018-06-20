@@ -100,6 +100,7 @@ def graph():
         mmm_avg_mem = [x[2] for x in mmm_instance_list]
         mmm_avg_disk = [x[3] for x in mmm_instance_list]
 
+
         # 如果没有设置自动提交事务，则这里需要手动提交一次
         conn.commit()
 

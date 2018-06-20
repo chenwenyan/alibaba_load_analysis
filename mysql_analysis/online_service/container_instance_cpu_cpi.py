@@ -47,8 +47,8 @@ def graph():
         ax1.set_ylabel("portion of instance")
         # ax1.set_ylim(0, 1800)
         # ax2.set_ylim(0, 1800)
-        ax1.hist(avg_cpi_less_20, bins=100, normed=False, alpha=1.0, facecolor='g')
-        ax2.hist(avg_cpi_more_20, bins=100, normed=False, alpha=1.0, facecolor='g')
+        ax1.hist(avg_cpi_less_20, bins=100, density=False, alpha=1.0, facecolor='g')
+        ax2.hist(avg_cpi_more_20, bins=100, density=False, alpha=1.0, facecolor='g')
 
         # plt.savefig('../imgs_mysql/container_instance_cpi_portion.png')
         plt.savefig('../imgs_mysql/container_instance_mpki_portion.png')

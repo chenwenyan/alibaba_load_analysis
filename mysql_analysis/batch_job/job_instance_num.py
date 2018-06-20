@@ -46,7 +46,7 @@ def graph():
     # ax1.set_xscale("log")
     # ax1.set_xlim(0,10000)
     instances_num = [float(x) for x in instances_num]
-    ax1.hist(instances_num, normed=False, alpha=1.0, facecolor='g', bins=len(np.unique(instances_num)))
+    ax1.hist(instances_num, density=False, alpha=1.0, facecolor='g', bins=len(np.unique(instances_num)))
 
     plt.savefig('../../imgs_mysql/job_instance_num.png')
     plt.show()

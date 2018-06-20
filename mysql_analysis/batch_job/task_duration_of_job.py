@@ -40,7 +40,7 @@ def graph():
     fig = plt.figure()
     ax1 = fig.add_subplot(1, 1, 1)
     # 直方图
-    ax1.hist(avg_task_duration, normed=False, alpha=1.0, bins=100)
+    ax1.hist(avg_task_duration, density=False, alpha=1.0, bins=100)
     ax1.set_xlabel('average task duration(h)')
     ax1.set_ylabel('job number')
     ax1.set_yscale('log')

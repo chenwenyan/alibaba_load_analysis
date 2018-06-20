@@ -63,9 +63,9 @@ def graph():
     # ax1.set_xlim(0, 0.15)
     # plt.yticks([y for y in range(20 + 1) if y % 5 == 0])
     # 直方图
-    # ax1.hist(avg_cpi_4, normed=False, alpha=1.0, bins=50)
-    # ax2.hist(avg_cpi_4_8, normed=False, alpha=1.0, bins=50)
-    # ax3.hist(avg_cpi_8_12, normed=False, alpha=1.0, bins=50)
+    # ax1.hist(avg_cpi_4, density=False, alpha=1.0, bins=50)
+    # ax2.hist(avg_cpi_4_8, density=False, alpha=1.0, bins=50)
+    # ax3.hist(avg_cpi_8_12, density=False, alpha=1.0, bins=50)
     # ax1.set_xlabel('cpi ts less 4(h)')
     # ax2.set_xlabel('cpi ts more 4(h) less 8(h)')
     # ax3.set_xlabel('cpi ts more 8(h) less 12(h)')
@@ -73,9 +73,9 @@ def graph():
     #
     # plt.savefig("../../imgs_mysql/container_instance_cpi_time")
 
-    ax1.hist(avg_mpki_4, normed=False, alpha=1.0, bins=50)
-    ax2.hist(avg_mpki_4_8, normed=False, alpha=1.0, bins=50)
-    ax3.hist(avg_mpki_8_12, normed=False, alpha=1.0, bins=50)
+    ax1.hist(avg_mpki_4, density=False, alpha=1.0, bins=50)
+    ax2.hist(avg_mpki_4_8, density=False, alpha=1.0, bins=50)
+    ax3.hist(avg_mpki_8_12, density=False, alpha=1.0, bins=50)
     ax1.set_xlabel('mpki ts less 4(h)')
     ax2.set_xlabel('mpki ts more 4(h) less 8(h)')
     ax3.set_xlabel('mpki ts more 8(h) less 12(h)')

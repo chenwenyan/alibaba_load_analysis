@@ -53,9 +53,9 @@ def graph():
         ax3.set_xlabel("average mpki(avg disk more 60)")
         ax1.set_ylabel("portion of instance")
         ax3.set_ylim(0, 10)
-        ax1.hist(avg_cpi_less_30, bins=100, normed=False, alpha=1.0, facecolor='g')
-        ax2.hist(avg_cpi_more_30_less_60, bins=100, normed=False, alpha=1.0, facecolor='g')
-        ax3.hist(avg_cpi_more_60, bins=100, normed=False, alpha=1.0, facecolor='g')
+        ax1.hist(avg_cpi_less_30, bins=100, density=False, alpha=1.0, facecolor='g')
+        ax2.hist(avg_cpi_more_30_less_60, bins=100, density=False, alpha=1.0, facecolor='g')
+        ax3.hist(avg_cpi_more_60, bins=100, density=False, alpha=1.0, facecolor='g')
 
         # plt.savefig('../imgs_mysql/container_instance_disk_cpi.png')
         plt.savefig('../imgs_mysql/container_instance_disk_mpki.png')

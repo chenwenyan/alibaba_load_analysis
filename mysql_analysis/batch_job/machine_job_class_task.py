@@ -99,12 +99,12 @@ def graph():
         ax5.set_xlabel("task number of task for job")
         ax1.set_ylabel("portion of job")
         ax4.set_ylabel("portion of job")
-        ax1.hist(sll_instance_num, normed=False, alpha=1.0, bins=100)
-        ax2.hist(sml_instance_num, normed=False, alpha=1.0, bins=100)
-        ax3.hist(smm_instance_num, normed=False, alpha=1.0, bins=100)
-        ax4.hist(shl_instance_num, normed=False, alpha=1.0, bins=100)
-        ax5.hist(mll_instance_num, normed=False, alpha=1.0, bins=100)
-        ax6.hist(mml_instance_num, normed=False, alpha=1.0, bins=100)
+        ax1.hist(sll_instance_num, density=False, alpha=1.0, bins=100)
+        ax2.hist(sml_instance_num, density=False, alpha=1.0, bins=100)
+        ax3.hist(smm_instance_num, density=False, alpha=1.0, bins=100)
+        ax4.hist(shl_instance_num, density=False, alpha=1.0, bins=100)
+        ax5.hist(mll_instance_num, density=False, alpha=1.0, bins=100)
+        ax6.hist(mml_instance_num, density=False, alpha=1.0, bins=100)
 
         # cdf图
         # fig = plt.figure()

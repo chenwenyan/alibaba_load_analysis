@@ -40,7 +40,7 @@ def graph():
     fig = plt.figure()
     ax1 = fig.add_subplot(1, 1, 1)
     # 直方图
-    ax1.hist(task_num, normed=False, alpha=1.0, bins=max(task_num))
+    ax1.hist(task_num, density=False, alpha=1.0, bins=max(task_num))
     ax1.set_xlabel('task number per job')
     ax1.set_ylabel('job number')
     ax1.set_yscale('log')

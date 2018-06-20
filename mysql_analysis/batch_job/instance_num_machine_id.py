@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import matplotlib.pyplot as plt
 import MySQLdb as mdb
 from matplotlib import colors
@@ -16,18 +17,27 @@ def graph():
     cursor = conn.cursor()
     # 因该模块底层其实是调用CAPI的，所以，需要先得到当前指向数据库的指针。
     instance_num_list = []
+    machineID_list = []
+    X_label = []
     X = []
-    x = 0
-    step = 60
-    while x < 86400-step:
-        x = x + step
-        X.append(x)
+    step = 300
+    # while x < 86400-step:
+    #     x = x + step
+    #     X.append(x)
     try:
         fig = plt.figure()
         ax1 = fig.add_subplot(1, 1, 1)
         norm = colors.Normalize(vmin=0, vmax=100)
         for machine_id in range(1, 1314):
-            for i in X:
+            print(machine_id)
+            del instance_num_list[:]
+            del machineID_list[:]
+            del X[:]
+            i = 0
+
+            while i < 86400:
+                i = i + step
+                X.append(i)
                 print(i)
                 cursor.execute(
                     'select count(id) from batch_instance_2 where machineID = %d and start_timestamp <= %d and end_timestamp >= %d' % (machine_id,i,i))
@@ -36,9 +46,12 @@ def graph():
                 res = []
                 res[:] = map(list, list_records)
                 instance_num = [x[0] for x in res]
+                machineID_list.append(machine_id)
                 instance_num_list.append(instance_num)
+                instance_num_arr = np.asarray(instance_num_list)
             X_label = [x/3600 for x in X]
-            ax1.scatter(X_label, range(1, 1314), c=instance_num_list, norm=norm, alpha=0.5, s=2.0)
+            X_label = np.asarray(X_label)
+            ax1.scatter(X_label, np.asarray(machineID_list), c=np.squeeze(instance_num_arr), norm=norm, alpha=0.5, s=2.0)
 
     except:
         import traceback
@@ -52,7 +65,7 @@ def graph():
         conn.close()
 
     # 绘制渐变色标注
-    gci = plt.scatter(X_label, range(1, 1314), c=instance_num_list, norm=norm, alpha=0.5, s=2.0)
+    gci = plt.scatter(X_label, np.asarray(machineID_list), c=np.squeeze(instance_num_arr), norm=norm, alpha=0.5, s=2.0)
     cbar = plt.colorbar(gci)
     cbar.set_label('used')
     cbar.set_ticks(np.linspace(0, 100, 6))

@@ -62,10 +62,10 @@ def graph():
         ax2.set_xlabel("task duration for batch job's category")
         ax1.set_ylabel("portion of job")
         # ax4.set_ylabel("portion of job")
-        ax1.hist(sss_avg_instance_duration, normed=False, alpha=1.0, bins=100)
-        ax2.hist(sms_avg_instance_duration, normed=False, alpha=1.0, bins=100)
-        ax3.hist(mss_avg_instance_duration, normed=False, alpha=1.0, bins=100)
-        ax4.hist(mms_avg_instance_duration, normed=False, alpha=1.0, bins=100)
+        ax1.hist(sss_avg_instance_duration, density=False, alpha=1.0, bins=100)
+        ax2.hist(sms_avg_instance_duration, density=False, alpha=1.0, bins=100)
+        ax3.hist(mss_avg_instance_duration, density=False, alpha=1.0, bins=100)
+        ax4.hist(mms_avg_instance_duration, density=False, alpha=1.0, bins=100)
         plt.savefig('../../imgs_mysql/kmeans_job_category_task_duration.png')
 
         # cdf图
