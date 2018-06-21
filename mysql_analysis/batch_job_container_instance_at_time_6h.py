@@ -14,9 +14,13 @@ def graph():
     cursor = conn.cursor()
     # 因该模块底层其实是调用CAPI的，所以，需要先得到当前指向数据库的指针。
     try:
-        cursor.execute("select machineID, count(instance_id) from container_event where instance_id in (select DISTINCT instance_id from container_usage where ts <= 61050) group by machineID")
+        cursor.execute("select machineID, count(instance_id) from container_event where instance_id in (select DISTINCT instance_id from container_usage where ts <= 61050) group by machineID order by machineID")
         records = cursor.fetchall()
         list_records = list(records)
+
+        cursor.execute("select machineID, count(DISTINCT id) from batch_instance where start_timestamp <= 61050 and end_timestamp >= 61050 group by machineID order by machineID")
+        records = cursor.fetchall()
+        batch_instance_list_records = list(records)
 
     except:
         import traceback
@@ -32,29 +36,34 @@ def graph():
     res = []
     res[:] = map(list, list_records)
     machineID = [x[0] for x in res]
+    print(max(machineID))
     instance_num = [x[1] for x in res]
     print(max(instance_num))
     print(np.average(instance_num))
     print(min(instance_num))
 
+    res[:] = map(list, batch_instance_list_records)
+    batch_machineID = [x[0] for x in res]
+    print(max(batch_machineID))
+    batch_instance_num = [x[1] for x in res]
+    print(max(batch_instance_num))
+    print(np.average(batch_instance_num))
+    print(min(batch_instance_num))
 
-    fig = plt.figure()
+
+    fig = plt.figure(figsize=(16,4))
     ax1 = fig.add_subplot(1, 1, 1)
     # # 直方图
-    ax1.hist(instance_num, density=False, alpha=1.0, bins=100)
-    ax1.set_xlabel('instance number per machine')
-    ax1.set_ylabel('machine number')
-    ax1.set_xticks([y for y in range(max(instance_num) + 1)])
-    # cdf
-    axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
-    hist, bin_edges = np.histogram(instance_num, bins=len(np.unique(instance_num)))
-    cdf = np.cumsum(hist / sum(hist))
-    axins.plot(bin_edges[1:], cdf, color='red', ls='-')
-    # axins.set_yticks([])  # 设置y轴不显示刻度值
-    axins.set_xlabel("instance number per machine", fontsize=6)
-    axins.set_ylabel("portion of machine", fontsize=6)
+    # for i in
+    ax1.plot(machineID, instance_num, linewidth=0.5, label='online service')
+    ax1.plot(batch_machineID, batch_instance_num, linewidth=0.5, label='batch workload')
+    ax1.set_xlabel('machineID')
+    ax1.set_ylabel('instance number')
+    # ax1.set_yticks([y for y in range(0,20) if y/2 == 0 ])
+    ax1.set_ylim(0, 20)
+    ax1.set_xlim(1, 1313)
 
-    plt.savefig("../../imgs_mysql/container_instance_number_at_61050")
+    plt.savefig("../imgs_mysql/batch_job_container_instance_at_61050")
     plt.show()
 
 if __name__ == '__main__':

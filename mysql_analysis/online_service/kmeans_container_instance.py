@@ -65,7 +65,7 @@ def graph():
         smm_avg_disk = [x[3] for x in smm_instance_list]
 
         cursor.execute(
-            "select t.instance_id, t.avg_cpu, t.avg_mem, t.avg_disk from (select instance_id, avg(cpu_util) as avg_cpu, avg(mem_util) as avg_mem, avg(disk_util) as avg_disk from container_usage where mem_util > 0 and cpu_util > 0 and disk_util > 0 group by instance_id) t where t.avg_cpu <= 17.0986 and avg_mem <= 45.5775 and avg_disk <= 22.8332")
+            "select t.instance_id, t.avg_cpu, t.avg_mem, t.avg_disk from (select instance_id, avg(cpu_util) as avg_cpu, avg(mem_util) as avg_mem, avg(disk_util) as avg_disk from container_usage where mem_util > 0 and cpu_util > 0 and disk_util > 0 group by instance_id) t where t.avg_cpu > 17.0986 and avg_mem <= 45.5775 and avg_disk <= 22.8332")
         mss_instance = cursor.fetchall()
         mss_instance_list = list(mss_instance)
         mss_instance_id = [x[0] for x in mss_instance_list]

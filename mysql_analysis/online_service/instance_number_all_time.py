@@ -14,7 +14,7 @@ def graph():
     cursor = conn.cursor()
     # 因该模块底层其实是调用CAPI的，所以，需要先得到当前指向数据库的指针。
     try:
-        cursor.execute("select machineID, count(instance_id) from container_event where instance_id in (select DISTINCT instance_id from container_usage where ts <= 61050) group by machineID")
+        cursor.execute("select ts, count(DISTINCT instance_id) from container_usage group by ts")
         records = cursor.fetchall()
         list_records = list(records)
 
@@ -31,30 +31,17 @@ def graph():
 
     res = []
     res[:] = map(list, list_records)
-    machineID = [x[0] for x in res]
+    ts = [x[0]/3600-11 for x in res]
     instance_num = [x[1] for x in res]
     print(max(instance_num))
-    print(np.average(instance_num))
     print(min(instance_num))
-
 
     fig = plt.figure()
     ax1 = fig.add_subplot(1, 1, 1)
-    # # 直方图
-    ax1.hist(instance_num, density=False, alpha=1.0, bins=100)
-    ax1.set_xlabel('instance number per machine')
-    ax1.set_ylabel('machine number')
-    ax1.set_xticks([y for y in range(max(instance_num) + 1)])
-    # cdf
-    axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
-    hist, bin_edges = np.histogram(instance_num, bins=len(np.unique(instance_num)))
-    cdf = np.cumsum(hist / sum(hist))
-    axins.plot(bin_edges[1:], cdf, color='red', ls='-')
-    # axins.set_yticks([])  # 设置y轴不显示刻度值
-    axins.set_xlabel("instance number per machine", fontsize=6)
-    axins.set_ylabel("portion of machine", fontsize=6)
-
-    plt.savefig("../../imgs_mysql/container_instance_number_at_61050")
+    ax1.plot(ts, instance_num)
+    ax1.set_xlabel('time(h)')
+    ax1.set_ylabel('instance number')
+    plt.savefig("../../imgs_mysql/container_instance_num_all_time")
     plt.show()
 
 if __name__ == '__main__':

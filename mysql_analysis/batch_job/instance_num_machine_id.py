@@ -20,7 +20,7 @@ def graph():
     machineID_list = []
     X_label = []
     X = []
-    step = 300
+    step = 60
     # while x < 86400-step:
     #     x = x + step
     #     X.append(x)
@@ -71,7 +71,7 @@ def graph():
     cbar.set_ticks(np.linspace(0, 100, 6))
     ax1.set_xlabel("time(h)")
     ax1.set_ylabel("machineID")
-    plt.savefig("../../imgs_mysql/instance_number_machine_id")
+    plt.savefig("../../imgs_mysql/instance_number_machine_id_3")
     plt.show()
 
 if __name__ == '__main__':
