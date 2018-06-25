@@ -13,11 +13,14 @@ def graph():
     # 使用cursor()方法获取操作游标
     cursor = conn.cursor()
     # 因该模块底层其实是调用CAPI的，所以，需要先得到当前指向数据库的指针。
-    list_records = []
+
+    # update container_machine_category_at_6 a set pattern = REPLACE(concat(a.sss,a.ssm,a.sms,a.smm,a.mss,a.msm,a.mms,a.mmm),',','')  where a.machineID = a.machineID
+
     try:
-        cursor.execute("select pattern, count(machineID) from workload_pattern group by pattern")
+        cursor.execute("select pattern, count(machineID) from container_machine_category_at_6 group by pattern ")
         records = cursor.fetchall()
         list_records = list(records)
+
     except:
         import traceback
         traceback.print_exc()
@@ -34,18 +37,18 @@ def graph():
     pattern = [x[0] for x in res]
     machine_number = [x[1] for x in res]
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(8, 5))
     ax1 = fig.add_subplot(1, 1, 1)
     # # 直方图
-    ax1.bar(pattern, machine_number, width=0.2)
-    ax1.set_xlabel('workload pattern')
+    ax1.bar(pattern, machine_number)
+    ax1.set_xlabel('pattern')
     ax1.set_ylabel('machine number')
     for a,b in zip(pattern, machine_number):
         ax1.text(a, b+0.05, '%d' % b , ha='center', va= 'bottom',fontsize=8)
-    # plt.setp(ax1.xaxis.get_majorticklabels(), rotation=90)
+    plt.setp(ax1.xaxis.get_majorticklabels(), rotation=90)
     plt.tight_layout()
 
-    plt.savefig("../../imgs_mysql/job_category_at_time")
+    plt.savefig("../../imgs_mysql/kmeans_instance_category_analysis")
     plt.show()
 
 if __name__ == '__main__':
