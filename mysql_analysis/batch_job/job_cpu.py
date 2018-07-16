@@ -36,33 +36,28 @@ def graph():
     avg_cpu = [x[1] for x in res]
     avg_mem = [x[2] for x in res]
     avg_mem.remove(max(avg_mem))
+    print(np.average(avg_cpu))
     print(max(avg_cpu))
     print(min(avg_cpu))
-    print(max(avg_mem))
-    print(min(avg_mem))
-
+    # 0.6074789585338134
+    # 2.327999973297119
+    # 0.007692307520371217
 
     fig = plt.figure()
     ax1 = fig.add_subplot(1, 1, 1)
     # cpu
-    # cdf
-    # hist, bin_edges = np.histogram(avg_cpu, bins=len(np.unique(avg_cpu)))
-    # cdf = np.cumsum(hist / sum(hist))
-    # ax1.plot(bin_edges[1:], cdf, color='red', ls='-')
-    # ax1.set_xlabel("average cpu per job")
-    # ax1.set_ylabel("portion of job")
-    # plt.savefig('../imgs_mysql/cdf_of_job_cpu.png')
-    # # 直方图
-    # ax1.hist(avg_cpu, density=False, alpha=1.0, bins=100)
-    # ax1.set_xlabel('average cpu cores per job')
-    # ax1.set_ylabel('job number')
-    # axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
-    # hist, bin_edges = np.histogram(avg_cpu, bins=100)
-    # cdf = np.cumsum(hist / sum(hist))
-    # axins.plot(bin_edges[1:], cdf, color='red', ls='-')
-    # axins.set_xlabel("average cpu cores per job", fontsize=6)
-    # axins.set_ylabel("portion of job", fontsize=6)
-    # plt.savefig("../../imgs_mysql/hist_of_job_cpu")
+    # 直方图
+    ax1.hist(avg_cpu, density=False, alpha=1.0, bins=100)
+    ax1.set_xlabel('average cpu cores per job')
+    ax1.set_ylabel('job number')
+    axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
+    hist, bin_edges = np.histogram(avg_cpu, bins=100)
+    cdf = np.cumsum(hist / sum(hist))
+    axins.plot(bin_edges[1:], cdf, color='red', ls='-')
+    axins.set_xlabel("average cpu cores per job", fontsize=8)
+    axins.set_ylabel("portion of job", fontsize=8)
+    axins.tick_params(labelsize=8)
+    plt.savefig("../../imgs_mysql/hist_of_job_cpu")
 
     # memory
     # hist, bin_edges = np.histogram(avg_mem, bins=len(np.unique(avg_mem)))
@@ -72,19 +67,26 @@ def graph():
     # ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_memory.png')
     # 直方图
-    ax1.hist(avg_mem, density=False, alpha=1.0, bins=100)
-    ax1.set_xlabel('average normalized memory per job')
-    ax1.set_ylabel('job number')
-    # ax1.set_yscale('log')
-    axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
-    hist, bin_edges = np.histogram(avg_mem, bins=100)
-    cdf = np.cumsum(hist / sum(hist))
-    axins.plot(bin_edges[1:], cdf, color='red', ls='-')
-    # axins.xticks(fontsize=7)
-    # axins.yticks(fontsize=7)
-    axins.set_xlabel("average memory cores per job", fontsize=7)
-    axins.set_ylabel("portion of job", fontsize=7)
-    plt.savefig("../../imgs_mysql/hist_of_job_memory")
+    # print(np.average(avg_mem))
+    # print(np.max(avg_mem))
+    # print(np.min(avg_mem))
+    # 0.012941284939225393
+    # 0.06200323498749233
+    # 0.0003468537179287523
+    # ax1.hist(avg_mem, density=False, alpha=1.0, bins=100)
+    # ax1.set_xlabel('normalized average memory per job')
+    # ax1.set_ylabel('job number')
+    # # ax1.set_yscale('log')
+    # axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
+    # hist, bin_edges = np.histogram(avg_mem, bins=100)
+    # cdf = np.cumsum(hist / sum(hist))
+    # axins.plot(bin_edges[1:], cdf, color='red', ls='-')
+    # # axins.xticks(fontsize=7)
+    # # axins.yticks(fontsize=7)
+    # axins.set_xlabel("average memory per job", fontsize=8)
+    # axins.set_ylabel("portion of job", fontsize=8)
+    # axins.tick_params(labelsize=8)
+    # plt.savefig("../../imgs_mysql/hist_of_job_memory")
 
     plt.show()
 

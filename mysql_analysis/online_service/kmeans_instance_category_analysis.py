@@ -37,7 +37,7 @@ def graph():
     pattern = [x[0] for x in res]
     machine_number = [x[1] for x in res]
 
-    fig = plt.figure(figsize=(8, 5))
+    fig = plt.figure(figsize=(10, 5))
     ax1 = fig.add_subplot(1, 1, 1)
     # # 直方图
     ax1.bar(pattern, machine_number)
@@ -45,7 +45,7 @@ def graph():
     ax1.set_ylabel('machine number')
     for a,b in zip(pattern, machine_number):
         ax1.text(a, b+0.05, '%d' % b , ha='center', va= 'bottom',fontsize=8)
-    plt.setp(ax1.xaxis.get_majorticklabels(), rotation=90)
+    plt.setp(ax1.xaxis.get_majorticklabels(), rotation=65)
     plt.tight_layout()
 
     plt.savefig("../../imgs_mysql/kmeans_instance_category_analysis")

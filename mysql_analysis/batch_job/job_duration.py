@@ -37,15 +37,18 @@ def graph():
         records = cursor.fetchall()
         long_records = list(records)
 
-        cursor.execute("SELECT a.job_id, avg(a.cpu), avg(a.mem) FROM ( SELECT job_id, avg(real_cpu_avg) AS cpu, avg(real_mem_avg) AS mem FROM batch_instance WHERE real_mem_avg > 0 GROUP BY task_id ) a WHERE a.job_id IN ( SELECT t.job_id FROM ( SELECT job_id, max(modify_timestamp) - min(create_timestamp) AS job_duration FROM batch_task WHERE STATUS = 'Terminated' GROUP BY job_id ) t WHERE t.job_duration / 3600 <= 0.2 ) GROUP BY a.job_id")
+        cursor.execute(
+            "SELECT a.job_id, avg(a.cpu), avg(a.mem) FROM ( SELECT job_id, avg(real_cpu_avg) AS cpu, avg(real_mem_avg) AS mem FROM batch_instance WHERE real_mem_avg > 0 GROUP BY task_id ) a WHERE a.job_id IN ( SELECT t.job_id FROM ( SELECT job_id, max(modify_timestamp) - min(create_timestamp) AS job_duration FROM batch_task WHERE STATUS = 'Terminated' GROUP BY job_id ) t WHERE t.job_duration / 3600 <= 0.2 ) GROUP BY a.job_id")
         records = cursor.fetchall()
         resource_record_of_short_job = list(records)
 
-        cursor.execute("SELECT a.job_id, avg(a.cpu), avg(a.mem) FROM ( SELECT job_id, avg(real_cpu_avg) AS cpu, avg(real_mem_avg) AS mem FROM batch_instance WHERE real_mem_avg > 0 GROUP BY task_id ) a WHERE a.job_id IN ( SELECT t.job_id FROM ( SELECT job_id, max(modify_timestamp) - min(create_timestamp) AS job_duration FROM batch_task WHERE STATUS = 'Terminated' GROUP BY job_id ) t WHERE t.job_duration / 3600 > 0.2 and t.job_duration / 3600 <= 10) GROUP BY a.job_id")
+        cursor.execute(
+            "SELECT a.job_id, avg(a.cpu), avg(a.mem) FROM ( SELECT job_id, avg(real_cpu_avg) AS cpu, avg(real_mem_avg) AS mem FROM batch_instance WHERE real_mem_avg > 0 GROUP BY task_id ) a WHERE a.job_id IN ( SELECT t.job_id FROM ( SELECT job_id, max(modify_timestamp) - min(create_timestamp) AS job_duration FROM batch_task WHERE STATUS = 'Terminated' GROUP BY job_id ) t WHERE t.job_duration / 3600 > 0.2 and t.job_duration / 3600 <= 10) GROUP BY a.job_id")
         records = cursor.fetchall()
         resource_record_of_medium_job = list(records)
 
-        cursor.execute("SELECT a.job_id, avg(a.cpu), avg(a.mem) FROM ( SELECT job_id, avg(real_cpu_avg) AS cpu, avg(real_mem_avg) AS mem FROM batch_instance WHERE real_mem_avg > 0 GROUP BY task_id ) a WHERE a.job_id IN ( SELECT t.job_id FROM ( SELECT job_id, max(modify_timestamp) - min(create_timestamp) AS job_duration FROM batch_task WHERE STATUS = 'Terminated' GROUP BY job_id ) t WHERE t.job_duration / 3600 > 5 and t.job_duration / 3600 <= 10) GROUP BY a.job_id")
+        cursor.execute(
+            "SELECT a.job_id, avg(a.cpu), avg(a.mem) FROM ( SELECT job_id, avg(real_cpu_avg) AS cpu, avg(real_mem_avg) AS mem FROM batch_instance WHERE real_mem_avg > 0 GROUP BY task_id ) a WHERE a.job_id IN ( SELECT t.job_id FROM ( SELECT job_id, max(modify_timestamp) - min(create_timestamp) AS job_duration FROM batch_task WHERE STATUS = 'Terminated' GROUP BY job_id ) t WHERE t.job_duration / 3600 > 5 and t.job_duration / 3600 <= 10) GROUP BY a.job_id")
         records = cursor.fetchall()
         resource_record_of_long_job = list(records)
         print(resource_record_of_long_job)
@@ -72,7 +75,7 @@ def graph():
 
     less = np.zeros(9)
     for i in job_duration:
-        if i >=0  and i < 1:
+        if i >= 0 and i < 1:
             less[0] = less[0] + 1
         elif i >= 1 and i < 2:
             less[1] = less[1] + 1
@@ -90,6 +93,12 @@ def graph():
             less[7] = less[7] + 1
         elif i >= 8 and i < 9:
             less[8] = less[8] + 1
+    print(np.average(job_duration))
+    print(np.max(job_duration))
+    print(np.min(job_duration))
+    # 0.10093286181981312
+    # 8.218055555555555
+    # 0.0002777777777777778
 
     # 绘图
     # fig = plt.figure(figsize=(9, 4))
@@ -98,7 +107,6 @@ def graph():
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
     ax1.hist(job_duration, density=False, alpha=1.0, bins=100)
-    print((max(job_duration) - min(job_duration)) /100)
     ax1.set_yscale('log')
     ax1.set_xlabel("job duration(h)")
     ax1.set_ylabel("job number")
@@ -106,13 +114,12 @@ def graph():
     hist, bin_edges = np.histogram(job_duration, bins=100)
     cdf = np.cumsum(hist / sum(hist))
     axins.plot(bin_edges[1:], cdf, color='red', ls='-')
-    axins.set_xscale('log')
-    axins.set_xlabel("job duration(h)", fontsize=7)
-    axins.set_ylabel("portion of job", fontsize=7)
-    print(len(np.unique(job_duration)))
+    # axins.set_xscale('log')
+    axins.set_xlabel("job duration(h)", fontsize=8)
+    axins.set_ylabel("portion of job", fontsize=8)
+    axins.tick_params(labelsize=8)
 
     plt.savefig("../../imgs_mysql/job_duration_hist.png")
-
 
     # 统计短job
     # res = []
@@ -164,6 +171,7 @@ def graph():
     # plt.savefig("../imgs_mysql/long_job_duration.png")
 
     plt.show()
+
 
 if __name__ == '__main__':
     graph()

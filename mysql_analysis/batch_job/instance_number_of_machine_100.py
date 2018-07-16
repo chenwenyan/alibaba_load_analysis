@@ -34,20 +34,27 @@ def graph():
     res[:] = map(list, list_records)
     machine_id = [x[0] for x in res]
     instance_num = [x[1] for x in res]
-
+    print(np.average(instance_num))
+    print(np.max(instance_num))
+    print(np.min(instance_num))
+#   22.639318885448915
+#   32
+#   16
 
     fig = plt.figure()
     ax1 = fig.add_subplot(1, 1, 1)
     ax1.hist(instance_num, bins=100)
     ax1.set_xlabel("instance number of machine")
     ax1.set_ylabel("machine number")
+    ax1.set_xticks([x for x in range(16, max(instance_num) + 1)])  # x标记step设置为1
     # cdf
     axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
     hist, bin_edges = np.histogram(instance_num, bins=len(np.unique(instance_num)))
     cdf = np.cumsum(hist / sum(hist))
     axins.plot(bin_edges[1:], cdf, color='red', ls='-')
-    axins.set_xlabel("instance number of machine", fontsize=7)
-    axins.set_ylabel("portion of machine", fontsize=7)
+    axins.set_xlabel("instance number of machine", fontsize=8)
+    axins.set_ylabel("portion of machine", fontsize=8)
+    axins.tick_params(labelsize=8)
     plt.savefig("../../imgs_mysql/machine_number_of_12_hour")
     plt.show()
 
