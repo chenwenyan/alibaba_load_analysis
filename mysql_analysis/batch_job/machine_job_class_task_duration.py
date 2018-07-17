@@ -73,7 +73,7 @@ def graph():
         fig = plt.figure()
         ax1 = fig.add_subplot(111)
         ax1.set_ylabel("portion of job")
-        ax1.set_xlabel("average task duration of every type job(h)")
+        ax1.set_xlabel("average task duration of every type job(hour)")
         hist, bin_edges = np.histogram(sll_avg_instance_duration, bins=len(np.unique(sll_avg_instance_duration)))
         cdf = np.cumsum(hist / sum(hist))
         ax1.plot(bin_edges[1:], cdf, color='green',  label='short-less-less')

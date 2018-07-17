@@ -66,7 +66,7 @@ def graph():
     ax1.plot(X, instance_num_list)
     ax1.axhline(np.average(instance_num_list),linewidth=1, color='r', ls='--', label='average value')
     plt.annotate('average value', xy=(20, 20), xytext=(22, 28),arrowprops=dict(facecolor='black', shrink=0.05))
-    ax1.set_xlabel("time(h)")
+    ax1.set_xlabel("time(hour)")
     ax1.set_ylabel("instance number")
     # ax1.set_xlim(0, 24)
     ax1.set_ylim(0, 80)

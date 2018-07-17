@@ -66,16 +66,16 @@ def graph():
         ax2.plot(timestamp, max_mpki, label="max")
         ax1.fill_between(timestamp, min_cpi, max_cpi, facecolor='#FFB6C1')
         ax2.fill_between(timestamp, min_mpki, max_mpki, facecolor='#FFB6C1')
-        ax1.set_xlabel("time(h)")
-        ax2.set_xlabel("time(h)")
+        ax1.set_xlabel("time(hour)")
+        ax2.set_xlabel("time(hour)")
         ax1.set_ylabel("average cpi of all instance")
         ax2.set_ylabel("average mpki of all instance")
         # matplotlib.rcParams['xtick.direction'] = 'in'
         ax1.legend(loc="best")
         ax2.legend(loc="best")
 
-        plt.savefig('../../imgs_mysql/container_instance_cpi_plot.png')
-        # plt.savefig('../../paper_img/avg_cpi_mpki', dpi=2000)
+        # plt.savefig('../../imgs_mysql/container_instance_cpi_plot.png')
+        plt.savefig('../../paper_img/avg_cpi_mpki.pdf')
         plt.show()
     except:
         import traceback

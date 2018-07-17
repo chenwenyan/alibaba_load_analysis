@@ -69,7 +69,7 @@ def graph():
     cbar = plt.colorbar(gci)
     cbar.set_label('used')
     cbar.set_ticks(np.linspace(0, 100, 6))
-    ax1.set_xlabel("time(h)")
+    ax1.set_xlabel("time(hour)")
     ax1.set_ylabel("machineID")
     plt.savefig("../../imgs_mysql/instance_number_machine_id_4")
     plt.show()

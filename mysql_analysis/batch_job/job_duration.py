@@ -108,18 +108,19 @@ def graph():
     ax1 = fig.add_subplot(111)
     ax1.hist(job_duration, density=False, alpha=1.0, bins=100)
     ax1.set_yscale('log')
-    ax1.set_xlabel("job duration(h)")
+    ax1.set_xlabel("job duration(hour)")
     ax1.set_ylabel("job number")
     axins = inset_axes(ax1, width=1.5, height=1.5, loc='upper right')
     hist, bin_edges = np.histogram(job_duration, bins=100)
     cdf = np.cumsum(hist / sum(hist))
     axins.plot(bin_edges[1:], cdf, color='red', ls='-')
     # axins.set_xscale('log')
-    axins.set_xlabel("job duration(h)", fontsize=8)
+    axins.set_xlabel("job duration(hour)", fontsize=8)
     axins.set_ylabel("portion of job", fontsize=8)
     axins.tick_params(labelsize=8)
 
-    plt.savefig("../../imgs_mysql/job_duration_hist.png")
+    # plt.savefig("../../imgs_mysql/job_duration_hist.png")
+    plt.savefig("../../paper_img/job_duration.pdf")
 
     # 统计短job
     # res = []

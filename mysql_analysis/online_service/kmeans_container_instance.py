@@ -112,9 +112,10 @@ def graph():
         ax1.bar( instance_class, instance_num, width=0.3)
         for a, b in zip(instance_class, instance_num):
             ax1.text(a, b + 0.05, '%d' % b, ha='center', va='bottom', fontsize=11)
-        ax1.set_xlabel('category')
+        ax1.set_xlabel('group')
         ax1.set_ylabel('instance number')
-        plt.savefig('../../imgs_mysql/bar_of_container_instance_1')
+        # plt.savefig('../../imgs_mysql/bar_of_container_instance_1')
+        plt.savefig('../../paper_img/online_service_workload_group.pdf')
         plt.show()
 
         fig = plt.figure()
@@ -135,7 +136,8 @@ def graph():
         # ax.set_xlim(0,1)
         # ax.view_init(elev=20., azim=-35)
         ax.grid(False)
-        plt.savefig('../../imgs_mysql/3d_kmeans_container_instance_category_1.png')
+        # plt.savefig('../../imgs_mysql/3d_kmeans_container_instance_category_1.png')
+        plt.savefig('../../paper_img/online_service_workload_group_3d.pdf')
         plt.show()
 
     except:

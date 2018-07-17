@@ -126,37 +126,38 @@ def graph():
         ax1.set_xlabel('group')
         ax1.set_ylabel('job number')
         # plt.savefig('../../imgs_mysql/bar_of_batch_job')
-        plt.savefig('../../paper_img/batch_job_group', dpi=2000)
+        plt.savefig('../../paper_img/batch_job_group.pdf')
         plt.show()
 
-        # fig = plt.figure()
-        # ax = Axes3D(fig)
-        # x1 = MaxMinNormalization(sss_job_duration)
-        # x2 = MaxMinNormalization(sms_job_duration)
-        # x3 = MaxMinNormalization(mss_job_duration)
-        # x4 = MaxMinNormalization(mms_job_duration)
-        # y1 = MaxMinNormalization(sss_avg_cpu)
-        # y2 = MaxMinNormalization(sms_avg_cpu)
-        # y3 = MaxMinNormalization(mss_avg_cpu)
-        # y4 = MaxMinNormalization(mms_avg_cpu)
-        # z1 = sss_avg_mem
-        # z2 = sms_avg_mem
-        # z3 = mss_avg_mem
-        # z4 = mms_avg_cpu
-        # sss = ax.scatter(x1, y1, z1, color='red', s = 1)
-        # sms = ax.scatter(x2, y2, z2, color='blue', s = 1)
-        # mss = ax.scatter(x3, y3, z3, color='black', s= 1)
-        # mms = ax.scatter(x4, y4, z4, color='green', s= 1)
-        # ax.legend((sss, sms, mss, mms),(u'sss',u'sms',u'mss',u'mms'), loc='upper left')
-        #
-        # ax.set_xlabel('norm job duration')
-        # ax.set_ylabel('average cpu(per job)')
-        # ax.set_zlabel('average memory(per job)')
-        # # ax.set_xlim(0,1)
-        # # ax.view_init(elev=20., azim=-35)
-        # ax.grid(False)
+        fig = plt.figure()
+        ax = Axes3D(fig)
+        x1 = MaxMinNormalization(sss_job_duration)
+        x2 = MaxMinNormalization(sms_job_duration)
+        x3 = MaxMinNormalization(mss_job_duration)
+        x4 = MaxMinNormalization(mms_job_duration)
+        y1 = MaxMinNormalization(sss_avg_cpu)
+        y2 = MaxMinNormalization(sms_avg_cpu)
+        y3 = MaxMinNormalization(mss_avg_cpu)
+        y4 = MaxMinNormalization(mms_avg_cpu)
+        z1 = sss_avg_mem
+        z2 = sms_avg_mem
+        z3 = mss_avg_mem
+        z4 = mms_avg_cpu
+        sss = ax.scatter(x1, y1, z1, color='red', s = 1)
+        sms = ax.scatter(x2, y2, z2, color='blue', s = 1)
+        mss = ax.scatter(x3, y3, z3, color='black', s= 1)
+        mms = ax.scatter(x4, y4, z4, color='green', s= 1)
+        ax.legend((sss, sms, mss, mms),(u'sss',u'sms',u'mss',u'mms'), loc='upper left')
+
+        ax.set_xlabel('normalized job duration')
+        ax.set_ylabel('normalized average cpu cores')
+        ax.set_zlabel('normalized average memory utilization')
+        # ax.set_xlim(0,1)
+        # ax.view_init(elev=20., azim=-35)
+        ax.grid(False)
         # plt.savefig('../../imgs_mysql/3d_kmeans_job_category.png')
-        # plt.show()
+        plt.savefig('../../paper_img/batch_job_group_3d.pdf')
+        plt.show()
 
     except:
         import traceback

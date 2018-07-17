@@ -28,9 +28,9 @@ def graph():
         ax1.set_title('cpu utilization')
         ax2.set_title('memory utilization')
         ax3.set_title('disk utilization')
-        ax1.set_xlabel("time(h)")
-        ax2.set_xlabel("time(h)")
-        ax3.set_xlabel("time(h)")
+        ax1.set_xlabel("time(hour)")
+        ax2.set_xlabel("time(hour)")
+        ax3.set_xlabel("time(hour)")
         ax1.set_ylabel('instance id')
         norm = colors.Normalize(vmin=0, vmax=50)
 

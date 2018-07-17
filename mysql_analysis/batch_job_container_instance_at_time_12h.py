@@ -67,7 +67,7 @@ def graph():
     ax1.legend(loc='best')
 
     # plt.savefig("../imgs_mysql/batch_job_container_instance_at_43200", quality=99)
-    plt.savefig("../paper_img/batch_job_container_instance_at_43200", dpi=2000)
+    plt.savefig("../paper_img/batch_job_container_instance_at_43200.pdf")
     plt.show()
 
 

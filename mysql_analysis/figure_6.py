@@ -46,8 +46,8 @@ def graph():
     # plt.title("memory utilization")
     ax1.set_ylabel('machine cpu utilization')
     ax2.set_ylabel('machine memory utilization')
-    ax1.set_xlabel('time(h)')
-    ax2.set_xlabel('time(h)')
+    ax1.set_xlabel('time(hour)')
+    ax2.set_xlabel('time(hour)')
 
     timestamp = [(x / 3600 - 11) for x in timestamp]
     max_cpu = [x/100 for x in max_cpu]

@@ -70,7 +70,7 @@ def graph():
     ax1.set_ylim(0, 1.4)
     ax1.set_xlim(0, max(timestamp))
     ax1.axhline(1.0, ls="--", color="r")
-    ax1.set_xlabel('time(h)')
+    ax1.set_xlabel('time(hour)')
     ax1.set_ylabel('portion of CPU loads (container)')
     ax1.set_title('1 min')
 
@@ -84,7 +84,7 @@ def graph():
     ax2.set_ylim(0, 1.4)
     ax2.set_xlim(0, max(timestamp))
     ax2.axhline(1.0, ls="--", color="r")
-    ax2.set_xlabel('time(h)')
+    ax2.set_xlabel('time(hour)')
     ax2.set_title('5 min')
 
     max_load15_arr = [x / 100 for x in max_load15_arr]
@@ -97,7 +97,7 @@ def graph():
     ax3.set_ylim(0, 1.4)
     ax3.set_xlim(0, max(timestamp))
     ax3.axhline(1.0, ls="--", color="r")
-    ax3.set_xlabel('time(h)')
+    ax3.set_xlabel('time(hour)')
     ax3.set_title('15 min')
 
     server_timestamp = [(x / 3600 - 11) for x in server_timestamp]
@@ -112,7 +112,7 @@ def graph():
     ax4.set_ylim(0, 1.4)
     ax4.set_xlim(0, max(server_timestamp))
     ax4.axhline(1.0, ls="--", color="r")
-    ax4.set_xlabel('time(h)')
+    ax4.set_xlabel('time(hour)')
     ax4.set_ylabel('portion of CPU loads (machine)')
 
     server_max_load5_arr = [x / 100 for x in server_max_load5_arr]
@@ -125,7 +125,7 @@ def graph():
     ax5.set_ylim(0, 1.4)
     ax5.set_xlim(0, max(server_timestamp))
     ax5.axhline(1.0, ls="--", color="r")
-    ax5.set_xlabel('time(h)')
+    ax5.set_xlabel('time(hour)')
 
     server_max_load15_arr = [x / 100 for x in server_max_load15_arr]
     server_avg_load15_arr = [x / 100 for x in server_avg_load15_arr]
@@ -137,7 +137,7 @@ def graph():
     ax6.set_ylim(0, 1.4)
     ax6.set_xlim(0, max(server_timestamp))
     ax6.axhline(1.0, ls="--", color="r")
-    ax6.set_xlabel('time(h)')
+    ax6.set_xlabel('time(hour)')
 
     plt.savefig('../imgs_mysql/figure_8.png')
     plt.show()

@@ -45,7 +45,8 @@ def graph():
     # plt.setp(ax1.xaxis.get_majorticklabels(), rotation=90)
     plt.tight_layout()
 
-    plt.savefig("../../imgs_mysql/job_category_at_time")
+    # plt.savefig("../../imgs_mysql/job_category_at_time")
+    plt.savefig("../../paper_img/batch_job_workload_pattern_1.pdf")
     plt.show()
 
 if __name__ == '__main__':

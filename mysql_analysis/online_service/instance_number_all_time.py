@@ -39,7 +39,7 @@ def graph():
     fig = plt.figure()
     ax1 = fig.add_subplot(1, 1, 1)
     ax1.plot(ts, instance_num)
-    ax1.set_xlabel('time(h)')
+    ax1.set_xlabel('time(hour)')
     ax1.set_ylabel('instance number')
     plt.savefig("../../imgs_mysql/container_instance_num_all_time")
     plt.show()

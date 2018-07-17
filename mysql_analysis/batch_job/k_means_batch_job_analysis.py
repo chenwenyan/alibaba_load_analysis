@@ -39,27 +39,28 @@ def graph():
         # 关闭数据库连接
         conn.close()
 
-    # res = []
-    # res[:] = map(list, list_records)
-    # job_id = [x[0] for x in res]
-    # avg_cpu = [x[1] for x in res]
-    # avg_mem = [x[2] for x in res]
-    # print(max(avg_cpu))
-    # print(min(avg_cpu))
-    # print(max(avg_mem))
-    # print(min(avg_mem))
-    #
-    # fig = plt.figure()
-    # ax1 = fig.add_subplot(1, 1, 1)
+    res = []
+    res[:] = map(list, list_records)
+    job_id = [x[0] for x in res]
+    avg_cpu = [x[1] for x in res]
+    avg_mem = [x[2] for x in res]
+    print(max(avg_cpu))
+    print(min(avg_cpu))
+    print(max(avg_mem))
+    print(min(avg_mem))
+
+    fig = plt.figure()
+    ax1 = fig.add_subplot(1, 1, 1)
     # cpu
     # cdf
-    # hist, bin_edges = np.histogram(avg_cpu, bins=len(np.unique(avg_cpu)))
-    # cdf = np.cumsum(hist / sum(hist))
-    # ax1.plot(bin_edges[1:], cdf, color='red', ls='-')
-    # ax1.set_xlabel("average cpu per job")
-    # ax1.set_ylabel("portion of job")
+    hist, bin_edges = np.histogram(avg_cpu, bins=len(np.unique(avg_cpu)))
+    cdf = np.cumsum(hist / sum(hist))
+    ax1.plot(bin_edges[1:], cdf, color='red', ls='-')
+    ax1.set_xlabel("average cpu per job")
+    ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_cpu.png')
-    # # 直方图
+    plt.savefig('../paper_img/cdf_avg_cpu_batch_job_groups.pdf')
+    # 直方图
     # ax1.hist(avg_cpu, density=False, alpha=1.0, bins=100)
     # ax1.set_xlabel('average cpu per job')
     # ax1.set_ylabel('job number')
@@ -70,12 +71,15 @@ def graph():
     # plt.savefig("../../imgs_mysql/hist_of_job_cpu")
 
     # memory
-    # hist, bin_edges = np.histogram(avg_mem, bins=len(np.unique(avg_mem)))
-    # cdf = np.cumsum(hist / sum(hist))
-    # ax1.plot(bin_edges[1:], cdf, color='red', ls='-')
-    # ax1.set_xlabel("average memory per job")
-    # ax1.set_ylabel("portion of job")
+    fig = plt.figure()
+    ax1 = fig.add_subplot(1, 1, 1)
+    hist, bin_edges = np.histogram(avg_mem, bins=len(np.unique(avg_mem)))
+    cdf = np.cumsum(hist / sum(hist))
+    ax1.plot(bin_edges[1:], cdf, color='red', ls='-')
+    ax1.set_xlabel("average memory per job")
+    ax1.set_ylabel("portion of job")
     # plt.savefig('../imgs_mysql/cdf_of_job_memory.png')
+    plt.savefig('../paper_img/cdf_avg_memory_batch_job_groups.pdf')
     # 直方图
     # ax1.hist(avg_mem, density=False, alpha=1.0, bins=100)
     # ax1.set_xlabel('average memory per job')
