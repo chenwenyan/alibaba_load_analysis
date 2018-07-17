@@ -123,9 +123,10 @@ def graph():
         ax1.bar(job_class, job_num, width=0.3)
         for a,b in zip(job_class,job_num):
             ax1.text(a, b+0.05, '%d' % b , ha='center', va= 'bottom',fontsize=11)
-        ax1.set_xlabel('category')
+        ax1.set_xlabel('group')
         ax1.set_ylabel('job number')
-        plt.savefig('../../imgs_mysql/bar_of_batch_job')
+        # plt.savefig('../../imgs_mysql/bar_of_batch_job')
+        plt.savefig('../../paper_img/batch_job_group', dpi=2000)
         plt.show()
 
         # fig = plt.figure()

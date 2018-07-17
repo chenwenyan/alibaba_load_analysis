@@ -131,8 +131,8 @@ def graph():
         # ax1.plot(bin_edges[1:], cdf, color='pink', label='medium-mid-less')
         # ax1.legend(loc="best")
 
-        plt.savefig('../../imgs_mysql/machine_job_class_task.png')
-        # plt.savefig('../imgs_mysql/machine_job_class_task_cdf.png')
+        # plt.savefig('../../imgs_mysql/machine_job_class_task.png')
+        plt.savefig('../paper_img/machine_job_class_task_cdf')
         plt.show()
 
     except:

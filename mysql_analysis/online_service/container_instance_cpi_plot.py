@@ -75,6 +75,7 @@ def graph():
         ax2.legend(loc="best")
 
         plt.savefig('../../imgs_mysql/container_instance_cpi_plot.png')
+        # plt.savefig('../../paper_img/avg_cpi_mpki', dpi=2000)
         plt.show()
     except:
         import traceback
