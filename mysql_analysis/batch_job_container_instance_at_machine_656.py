@@ -76,10 +76,11 @@ def graph():
     fig = plt.figure(figsize=(16, 4))
     ax1 = fig.add_subplot(1, 1, 1)
     # # 直方图
-    # for i in
+    X = [x/3600 for x in X]
+    container_X = [x/3600 for x in container_X]
     ax1.plot(X, instance_num_list, linewidth=0.5, label='batch workload')
     ax1.plot(container_X, container_instance_num_list, linewidth=0.5, label='online service')
-    ax1.set_xlabel('time(s)')
+    ax1.set_xlabel('time(hour)')
     ax1.set_ylabel('instance number')
     # ax1.set_yticks([y for y in range(0, 21) if y % 2 == 0])
     # ax1.set_ylim(0, 20)

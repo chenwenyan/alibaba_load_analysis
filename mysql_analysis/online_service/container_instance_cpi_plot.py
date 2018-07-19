@@ -15,7 +15,7 @@ def graph():
 
     try:
         cursor.execute(
-            "select ts, avg(avg_cpi), avg(max_cpi), min(avg_cpi), avg(avg_mpki), avg(max_mpki), min(avg_mpki) from container_usage group by instance_id, ts ASC")
+            "select ts, avg(avg_cpi), avg(max_cpi), min(avg_cpi), avg(avg_mpki), avg(max_mpki), min(avg_mpki) from container_usage group by ts ASC")
         # cursor.execute("SELECT t.ts, avg(t.avg_cpi), avg(t.max_cpi), avg(t.min_cpi), avg(t.avg_mpki), avg(t.max_mpki), avg(t.min_mpki) FROM ( SELECT ts, avg(avg_cpi) AS avg_cpi, avg(max_cpi) AS max_cpi, min(avg_cpi) AS min_cpi, avg(avg_mpki) AS avg_mpki, avg(max_mpki) AS max_mpki, min(avg_mpki) AS min_mpki FROM container_usage GROUP BY instance_id ) t GROUP BY t.ts")
         records = cursor.fetchall()
         result = list(records)
@@ -58,14 +58,16 @@ def graph():
         ax2.set_xlim(0, max(timestamp))
         ax1.set_ylim(0, max(max_cpi) + 0.2)
         ax2.set_ylim(0, max(max_mpki) + 0.2)
-        ax1.plot(timestamp, min_cpi, label="min")
-        ax1.plot(timestamp, avg_cpi, label="avg")
+        # ax1.plot(timestamp, min_cpi, label="min")
         ax1.plot(timestamp, max_cpi, label="max")
-        ax2.plot(timestamp, min_mpki, label="min")
-        ax2.plot(timestamp, avg_mpki, label="avg")
+        ax1.plot(timestamp, avg_cpi, label="avg")
+        # ax2.plot(timestamp, min_mpki, label="min")
         ax2.plot(timestamp, max_mpki, label="max")
-        ax1.fill_between(timestamp, min_cpi, max_cpi, facecolor='#FFB6C1')
-        ax2.fill_between(timestamp, min_mpki, max_mpki, facecolor='#FFB6C1')
+        ax2.plot(timestamp, avg_mpki, label="avg")
+        ax1.set_ylim(0,3.2)
+        ax2.set_ylim(0,3.2)
+        ax1.fill_between(timestamp, 0, max_cpi, facecolor='#FFB6C1')
+        ax2.fill_between(timestamp, 0, max_mpki, facecolor='#FFB6C1')
         ax1.set_xlabel("time(hour)")
         ax2.set_xlabel("time(hour)")
         ax1.set_ylabel("average cpi of all instance")
@@ -73,6 +75,7 @@ def graph():
         # matplotlib.rcParams['xtick.direction'] = 'in'
         ax1.legend(loc="best")
         ax2.legend(loc="best")
+        print(min_cpi)
 
         # plt.savefig('../../imgs_mysql/container_instance_cpi_plot.png')
         plt.savefig('../../paper_img/avg_cpi_mpki.pdf')
